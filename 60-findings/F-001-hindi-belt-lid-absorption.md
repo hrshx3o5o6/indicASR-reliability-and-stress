@@ -24,4 +24,6 @@ They demand different fixes ([[EXP-C]] addresses #1 via top-K routing; #2 may ne
 
 **Status.** `vendor-reported` → Exp A re-measures on Core + Flex: top-1/2/3 acc, confusion matrix, absorption rate on clean synthetic Hindi-belt audio ([[indic-tts-corpora]] probe) to separate acoustic vs decoder causes.
 
+**Update 2026-09-10 (code audit):** vendor's own 337k-clip measurements ([[F-002-vendor-lid-internals|F-002]]) refine the picture — the confusion is a **multi-way sink system** (`hne` is the biggest absorber, not Hindi), and hi/ur is declared genuinely inseparable. F-001 remains the card-level claim; F-002 is the mechanism-level account.
+
 **If confirmed with similar rates:** the adaptive-LID project ([[EXP-C]]) has its headline motivation pre-validated. **If refuted:** record honestly — maybe Core fixed what Flex's numbers show; that would itself be a finding about the two training runs.

@@ -1,4 +1,6 @@
 # Large / sensitive artifacts never enter the repo (README hygiene rules)
+.env
+code/.env
 code/data/audio/
 code/data/datasets/
 code/models/

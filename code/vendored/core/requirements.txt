@@ -1,0 +1,6 @@
+# Everything Indic Transcribe needs. No NeMo, no bodhan_genai.
+torch>=2.1
+torchaudio>=2.1          # resampling must be torchaudio's sinc_interp_hann
+transformers>=4.44
+sentencepiece>=0.1.99
+soundfile>=0.12          # reading audio files
