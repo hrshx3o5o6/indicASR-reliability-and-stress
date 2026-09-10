@@ -1,0 +1,25 @@
+# Pinned at Day-1 setup, after verifying model-card claims (see code/README.md)
+# Core inference (card: "model code ships in the repo, no NeMo needed" — verify)
+torch
+torchaudio
+transformers
+sentencepiece
+soundfile
+huggingface_hub
+
+# Audio conditioning / feature extraction
+librosa
+sox  # or ffmpeg via system package
+
+# Metrics
+jiwer
+editdistance
+
+# Reliability model (EXP-B)
+scikit-learn
+lightgbm
+
+# Analysis / plots
+pandas
+matplotlib
+seaborn

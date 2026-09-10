@@ -1,0 +1,21 @@
+# Large / sensitive artifacts never enter the repo (README hygiene rules)
+code/data/audio/
+code/data/datasets/
+code/models/
+code/cache/
+*.wav
+*.flac
+*.mp3
+*.pt
+*.ckpt
+*.safetensors
+*.npy
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor noise
+.DS_Store
