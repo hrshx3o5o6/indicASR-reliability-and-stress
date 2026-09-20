@@ -2,7 +2,7 @@
 type: experiment
 id: EXP-E
 title: "Diarization + multi-speaker pipeline"
-status: retracted-pending-rerun
+status: done
 phase: pilot-results
 depends: ["EXP-D"]
 updated: 2026-09-20
@@ -37,30 +37,35 @@ audio → VAD → diarization → speaker turns → Core per turn → reliabilit
 - Scope: 4 real two-speaker recordings, 2 Hindi and 2 Tamil, near-field and far-field, each approximately 60 seconds.
 - Pipeline: full-conversation chunking, oracle annotated-turn transcription, and automatic energy-VAD plus spectral-feature KMeans clustering.
 
-| Measure | Result |
-| --- | ---: |
-| No-diarization WER | 99.91% |
-| Oracle-turn WER | 99.80% |
-| Automatic VAD/cluster WER | 100.00% |
-| Automatic DER | 62.51% |
+| Measure | Result (2026-09-17, buggy — VOID) | Result (2026-09-20, fixed — REAL) |
+| --- | ---: | ---: |
+| No-diarization WER | ~~99.91%~~ | **66.6%** |
+| Oracle-turn WER | ~~99.80%~~ | **57.7%** |
+| Automatic VAD/cluster WER | ~~100.00%~~ | **82.6%** |
+| Automatic DER | 62.51% | 62.51% (unchanged, unaffected by the bug) |
 
-**⚠️ RETRACTED 2026-09-20.** The WER numbers in the table above are void — they
-were produced by a bug in `code/run_exp_e.py`'s `transcribe_clip()`, which
-called `asr.transcribe(...)[0]` without `return_lid=True`. Since `transcribe()`
+**Bug found, fixed, and re-measured 2026-09-20.** The original numbers were
+produced by a bug in `code/run_exp_e.py`'s `transcribe_clip()`, which called
+`asr.transcribe(...)[0]` without `return_lid=True`. Since `transcribe()`
 returns a bare `str` in that case, `[0]` indexed the **first character** of
 the string, not a tuple element (every other call site in this project, e.g.
 EXP-A/EXP-D, correctly passes `return_lid=True` and unpacks `(text, lid)`).
-Verified directly: a 60 s two-chunk clip's `no_diarization_transcript` was
-literally `"य उ"`, and oracle-turn transcript token counts matched
-`num_reference_segments` exactly in all 4 recordings regardless of segment
-duration (some segments were 5–27 s, not sub-second). That is a string-indexing
-artifact, not a "model degrades on short turns" signal. Bug fixed in code;
-**Automatic DER (62.51%) is unaffected** (it compares segment timing, not
-transcript text) and remains a directionally valid toy-baseline signal. The
-"Validity finding" originally written here (short-turn degradation) is
-retracted along with the WER numbers — see `F-003` for the full writeup.
+Verified directly on the old per-sample records: a 60 s two-chunk clip's
+`no_diarization_transcript` was literally `"य उ"`. Bug fixed; re-ran against a
+live local ASR service (M5 Mac, MPS) with Core re-vendored to the current HF
+revision. New transcripts are fluent and match the reference content
+(spot-checked). Full writeup and per-sample table: `F-003`.
 
-**Verdict.** EXP-E pilot **result unknown** pending a rerun with the fixed
-code against a live ASR service. DER alone still argues for turn
-padding/context and a real neural diarizer before expanding the benchmark,
-but the multi-speaker-remedy claim itself is open again.
+**Revised validity finding.** Oracle turns give a real but modest improvement
+over no diarization (66.6%→57.7%, ~9 points) — not a rescue, 57.7% WER is
+still far from usable. The more striking result: the **toy automatic VAD/KMeans
+diarizer makes things worse than doing nothing** (82.6% vs. 66.6%) — 3 of 4
+recordings got worse or flat under automatic segmentation. This shifts the
+interpretation from "Core degrades on short turns" (the old, bug-driven
+reading) to "turn-boundary quality matters a lot, and a naive automatic
+diarizer is actively counterproductive here."
+
+**Verdict.** EXP-E pilot's real result: partial improvement from oracle
+turns, net harm from the toy automatic diarizer. Strengthens rather than
+removes the case for turn padding/context and a real neural diarizer before
+expanding the benchmark — now on real numbers instead of a bug artifact.

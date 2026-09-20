@@ -2,7 +2,7 @@
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
 status: draft-reviewed
-version: 0.3
+version: 0.4
 updated: 2026-09-20
 model_snapshots:
   core: "bodhan-ai/indic-transcribe-core@4d29eeb7a099"
@@ -37,10 +37,13 @@ absorption (Bhojpuri auto-LID 0/10), show that top-3 candidate generation contai
 recoverable headroom (oracle WER 22.38% vs 24.87% baseline) while likelihood-based
 reranking fails, demonstrate that Flex's built-in mixed-mode ITN collapses currency
 surface recall from 100% to 0% (n=3 currency-bearing rows), and report a
-retracted finding: an initial claim that the vendor's diarize-then-transcribe
-remedy fails even with oracle boundaries turned out to be a pipeline bug
-(a string-indexing error truncated every EXP-E transcript to ~1 character),
-found and fixed during review — the real result is unmeasured pending a rerun.
+found-fixed-and-remeasured pipeline bug: an initial claim that the vendor's
+diarize-then-transcribe remedy produces near-total failure (WER ~99.8%) even
+with oracle boundaries turned out to be a string-indexing error that
+truncated every EXP-E transcript to ~1 character; after the fix, the real
+oracle-turn WER is 57.7% — still far from usable, but a genuine ~9-point
+improvement over no diarization (66.6%), and the naive automatic diarizer
+tested makes things measurably *worse* than doing nothing (82.6%).
 A project-defined, normalization-tolerant OI-WER (no public vendor definition
 exists) narrows but does not close the gap to the vendor's reported average
 (19.9% vs 8.7%), and every headline comparison carries a bootstrap 95%
@@ -171,23 +174,26 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
   accordingly in the claim ledger (§7, C2).
 
 ### 5.5 EXP-E — Diarization pilot
-- **⚠️ RETRACTED (2026-09-20): the WER numbers below were a pipeline bug, not a
-  model result.** `run_exp_e.py` called `asr.transcribe(...)[0]` without
-  `return_lid=True`; since `transcribe()` returns a bare string in that case,
-  `[0]` took the first *character*, not the transcript. Confirmed directly on
-  the per-sample records: a 60 s clip's transcript was `"य उ"` (one character
-  per chunk), and oracle-turn token counts matched segment counts exactly
-  (23/23, 12/12, 30/30, 27/27) regardless of segment duration (some 5–27 s).
-  Bug fixed in code; **not re-run** (needs the ASR service, currently
-  offline). Full writeup: `F-003`.
+- **Bug found, fixed, and re-measured (2026-09-20).** `run_exp_e.py` called
+  `asr.transcribe(...)[0]` without `return_lid=True`; since `transcribe()`
+  returns a bare string in that case, `[0]` took the first *character*, not
+  the transcript — the original 09-17 numbers (no-diar 99.91%, oracle-turn
+  99.80%, auto-VAD 100.00%) were void. Fixed and re-ran end-to-end against a
+  live local ASR service (M5 Mac, MPS, Core re-vendored to `e083ab7d...`).
+  Full writeup: `F-003`.
 - 4 real two-speaker recs (2 hi, 2 ta; near/far field; ~60 s).
-- ~~WER: no-diar 99.91 / oracle-turn 99.80 / auto-VAD+KMeans 100.00~~ — void, see above.
-- DER 62.51 (toy VAD/KMeans baseline) is unaffected by the bug (computed from
-  segment timing, not transcript text) and may still be cited directionally.
-- Artifact: `results/exp-e/exp-e-pilot-summary.json` (WER fields invalid).
-- Verdict: **pilot result unknown** until re-run with fixed code; DER-only
-  signal says diarization-quality work (turn padding + neural diarizer) is
-  still needed regardless of the WER retraction.
+- **Real WER (2026-09-20): no-diar 66.6% / oracle-turn 57.7% / auto-VAD+KMeans
+  82.6%.** DER 62.51% (toy VAD/KMeans baseline, unchanged — never depended on
+  transcript text).
+- Per-sample: hindi_085 (53.4/47.4/68.4), hindi_065 (47.2/28.7/98.5),
+  tamil_092 (74.6/73.0/73.0), tamil_076 (91.3/81.5/90.8) — no-diar/oracle/auto,
+  all %.
+- Artifact: `code/data/challenge/results/exp-e-v2/exp-e-pilot-summary.json` (SSD).
+- Verdict: oracle turns give a real but modest improvement (~9 points) — not
+  a rescue. The toy automatic diarizer makes things **worse than doing
+  nothing** (82.6% vs 66.6%) — turn-boundary quality matters more than raw
+  short-turn ASR weakness. Strengthens rather than removes the case for a
+  real neural diarizer + turn padding before shipping any multi-speaker path.
 
 ### 5.6 EXP-F — Real-noise robustness (registered, not run)
 - Design and falsifiable targets: `EXP-F-real-noise.md`. No artifact yet.
@@ -222,8 +228,10 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 - Obvious interpretable reliability signals are insufficient; a better reranker is
   required before abstention becomes useful.
 - Built-in ITN is formatting without a semantic guard.
-- Multi-speaker readiness: **unknown**, not "gated on turn-context handling" — the
-  original claim rested on a pipeline bug (§5.5/F-003), retracted pending rerun.
+- Multi-speaker readiness is gated on turn-boundary *quality*, not just
+  presence: oracle turns help modestly (66.6%→57.7% WER), a naive automatic
+  diarizer actively hurts (82.6%) — re-measured 2026-09-20 after fixing a bug
+  that had inflated the original numbers to near-total failure (§5.5/F-003).
 
 ## 7. Claim ledger (evidence + confidence)
 
@@ -231,7 +239,7 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 |---|---|---|---|---|
 | C1 | Bhojpuri absorbed by Hindi in auto-LID | EXP-A bho 0/10, Wilson 95% CI [0%, 27.8%]; EXP-C top-3 contains truth 10/10 | high (n=10) | 1 dialect/source |
 | C2 | Built-in mixed ITN breaks critical values | EXP-D currency 100→0 (n=3 rows), entity 49.6→20.5 (n=39 rows); WER regression bootstrap 95% CI [+7.8, +15.4] pts (n=80) | medium-high for entity/WER; **low for currency (n=3)** | surface metric, 50/80 rows carried any annotated slot — see §5.4 reconciliation |
-| C3 | ~~Vendor diarize-then-transcribe insufficient as stated~~ **RETRACTED** | EXP-E WER numbers were a `[0]`-string-indexing bug, not a model result (F-003) | none — claim withdrawn | n=4, 2 langs; rerun pending live ASR service |
+| C3 | Vendor's diarize-then-transcribe remedy helps modestly but is not sufficient alone; a naive automatic diarizer actively hurts | EXP-E rerun 2026-09-20: no-diar 66.6% → oracle-turn 57.7% (real WER, after fixing a `[0]`-indexing bug that had inflated the original numbers to ~99.8%) → automatic VAD/KMeans 82.6% (worse than no-diar) | high for this slice (measured end-to-end, real transcripts spot-checked) | n=4, 2 langs, DER from a toy energy-VAD/KMeans baseline |
 | C4 | Top-K generation has headroom; likelihood reranker fails | EXP-C oracle 22.38 vs 24.87; bootstrap 95% CI on the gap [1.04, 4.20] pts, p≈0.0002 | medium-high | n=80, one reranker |
 | C5 | Vendor OI-WER does not transfer to this slice | EXP-A whitespace WER 22.0 / project OI-WER 19.9 vs vendor's reported OI-WER 8.7 (§5.7) | high (categorical; formatting tolerance closes only ~2 of ~13 points) | different corpus; still not the vendor's own OI-WER definition |
 | C6 | Interpretable features do not predict errors here | EXP-B AUC 0.515, bootstrap 95% CI [0.387, 0.646] (spans 0.5) | medium-high — CI confirms "no better than chance," not just a point estimate | n=80, provisional label |
@@ -253,8 +261,8 @@ production-safety statement; DER quality of neural diarization.
   remain exact-surface only.
 - Single model snapshot predating the 2026-09-15 vendor update — code-level
   claims (F-002, D-002) have not been re-checked against it.
-- EXP-E (§5.5) is unmeasured pending a rerun after the 2026-09-20 bug fix;
-  do not cite its pre-fix WER numbers.
+- EXP-E (§5.5) was re-measured 2026-09-20 after a bug fix; do not cite the
+  pre-fix (2026-09-17) WER numbers anywhere — they are void.
 - Labels use provisional `WER ≤ 0.20`; thresholds are policy choices, not learned.
 - No repeated runs / decoding-seed variance measured — all point estimates are
   from a single decode per sample; bootstrap CIs quantify sampling
@@ -284,7 +292,9 @@ production-safety statement; DER quality of neural diarization.
 - B. Card-vs-code delta tables (`20-models/*`).
 - C. Engineering log (`90-journal/`).
 - D. Known discrepancies and fixes: §5.4 EXP-D annotation-count reconciliation;
-  §5.5 EXP-E transcribe-bug retraction (F-003); §5.7 OI-WER fallback (D-006).
+  §5.5 EXP-E transcribe-bug found/fixed/re-measured (F-003); §5.7 OI-WER
+  fallback (D-006); §2 code-audit finding F-005 (Flex-only auto-LID
+  restriction, C7).
 
 ---
 
@@ -293,8 +303,8 @@ production-safety statement; DER quality of neural diarization.
 | Section | Source of truth | Status |
 |---|---|---|
 | §5.1–5.4 | SSD summary JSON + `code/results/stats/bootstrap.json` | filled, CI-backed |
-| §5.5 (EXP-E) | `F-003` | **retracted pending rerun** — bug found and fixed 2026-09-20 |
+| §5.5 (EXP-E) | `F-003`, SSD `exp-e-v2/exp-e-pilot-summary.json` | **re-measured 2026-09-20** — bug found, fixed, real numbers in |
 | §5.6 (EXP-F) | `EXP-F-real-noise.md` | not run — needs live ASR service |
 | §5.7 (OI-WER) | `code/results/summaries/exp-a-v1-oiwer-summary.json` | filled 2026-09-20 |
-| §7 C1–C6 | findings `F-001..004` + summaries + bootstrap CIs | filled, scope-limited, C3 withdrawn |
+| §7 C1–C7 | findings `F-001..005` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
 | Lockfile / full repro bundle | — | still TODO (§9) |

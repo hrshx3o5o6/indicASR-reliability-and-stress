@@ -14,7 +14,10 @@ updated: 2026-09-17
 - **EXP-B v1:** complete for the 80-sample scope; conservative policy currently abstains on every sample.
 - **EXP-C v1:** complete for the 80-sample scope; top-K has headroom, but the current reranker is not a win.
 - **EXP-D v1:** complete with conservative agent-reviewed annotations; Flex mixed normalization is a no-go.
-- **EXP-E pilot:** complete on 4 real recordings; Core remains unusable on this conversational slice even with oracle turns.
+- **EXP-E pilot:** complete on 4 real recordings; a `[0]`-indexing bug inflated
+  the original numbers to near-total failure (fixed and re-measured
+  2026-09-20 — see below). Real result: oracle turns help modestly, a naive
+  automatic diarizer hurts.
 - **Execution commitment:** proceed through EXP-C, then EXP-D and EXP-E without waiting for another confirmation; each phase gets its own evidence-backed stop/go verdict.
 - **Storage:** artifacts are on `/Volumes/Harshas ssd/Harshas Mac/work/bodhanai-asr-research`.
 
@@ -93,14 +96,28 @@ Flex native improved over Core on 19/80 rows, tied 36/80, and worsened 25/80. Fl
 
 **Scope.** Four real two-speaker conversations from Indic DiarBench: two Hindi and two Tamil recordings, near-field and far-field, each about one minute. The pilot compared full-conversation chunking, oracle annotated turns, and automatic energy-VAD plus spectral-feature KMeans clustering.
 
-| Measure | Result |
-| --- | ---: |
-| No-diarization WER | 99.91% |
-| Oracle-turn WER | 99.80% |
-| Automatic VAD/cluster WER | 100.00% |
-| Automatic DER | 62.51% |
+| Measure | Result (2026-09-17, VOID — see below) | Result (2026-09-20, real) |
+| --- | ---: | ---: |
+| No-diarization WER | ~~99.91%~~ | **66.6%** |
+| Oracle-turn WER | ~~99.80%~~ | **57.7%** |
+| Automatic VAD/cluster WER | ~~100.00%~~ | **82.6%** |
+| Automatic DER | 62.51% | 62.51% (unchanged) |
 
-**Interpretation.** Core produced only partial characters on many short conversational turns, including oracle cuts; diarization alone did not recover usable transcription. The 62.51% DER is only the simple clustering baseline’s result, not a claim about neural diarization. The immediate engineering response is turn padding/context plus a neural diarizer, not tuning the ASR WER threshold.
+**⚠️ 2026-09-20: the 09-17 numbers were a bug, not a model result.**
+`run_exp_e.py`'s `transcribe_clip()` called `asr.transcribe(...)[0]` without
+`return_lid=True`, truncating every transcript to ~1 character. Fixed, and
+re-ran end-to-end against a live local ASR service.
+
+**Interpretation (revised).** Oracle turn boundaries give a real but modest
+improvement over no diarization (66.6%→57.7%, ~9 points) — not a rescue,
+57.7% WER is still far from usable. The naive automatic VAD/KMeans diarizer
+makes things **worse than doing nothing** (82.6% vs 66.6%) — 3 of 4
+recordings got worse or flat under automatic segmentation. The 62.51% DER is
+only the simple clustering baseline's result, not a claim about neural
+diarization. The immediate engineering response is still turn padding/context
+plus a neural diarizer, but the reason has sharpened: turn-boundary *quality*
+is the bottleneck, and a naive baseline actively hurts rather than merely
+under-delivering.
 
 ## Takeaways
 
@@ -112,7 +129,7 @@ Flex native improved over Core on 19/80 rows, tied 36/80, and worsened 25/80. Fl
 6. The project should improve reliability/LID handling rather than train another ASR model.
 7. Top-K language generation can expose recoverable errors, but reranking needs language-sensitive and semantic evidence; decoder likelihood alone favors the absorbed Hindi hypothesis.
 8. Flex mixed mode changes formatting aggressively but increases WER from 22.01% to 33.54%; semantic-slot annotations are required before judging whether any apparent number/entity formatting is beneficial.
-9. In the EXP-E pilot, correct turn boundaries alone did not rescue Core on short conversational turns; multi-speaker support requires both diarization and turn-context handling.
+9. In the EXP-E pilot (re-measured 2026-09-20 after a bug fix), correct turn boundaries help modestly (66.6%→57.7% WER) but do not rescue Core; a naive automatic diarizer actively makes results worse (82.6%) — turn-boundary quality, not just presence, is the bottleneck.
 
 ## Known limitations
 
@@ -202,8 +219,9 @@ Planning pass for publication + a sandboxed verification loop. Full detail in
 - EXP-D curated semantic diagnostic: `data/challenge/results/exp-d/exp-d-semantic-curated-summary.json`
 - EXP-E dataset: `data/exp-e/indic-diarbench/`
 - EXP-E runner: `code/run_exp_e.py`
-- EXP-E pilot results: `data/challenge/results/exp-e/exp-e-pilot-results.jsonl`
-- EXP-E pilot summary: `data/challenge/results/exp-e/exp-e-pilot-summary.json`
+- EXP-E pilot results (VOID, pre-bug-fix): `data/challenge/results/exp-e/exp-e-pilot-results.jsonl`
+- EXP-E pilot results (real, 2026-09-20): `data/challenge/results/exp-e-v2/exp-e-pilot-results.jsonl`
+- EXP-E pilot summary (real, 2026-09-20): `data/challenge/results/exp-e-v2/exp-e-pilot-summary.json`
 - EXP-F protocol: [[EXP-F-real-noise]] (planned; no artifacts yet — run internally, migrate to SSD when next mounted)
 
 ## Maintenance rule

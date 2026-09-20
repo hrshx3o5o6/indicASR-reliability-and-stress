@@ -72,8 +72,11 @@ def write_record(path: Path, record: dict[str, Any]) -> None:
         handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
-def _load_asr(model_dir: Path, device: str):
-    sys.path.insert(0, str(Path(__file__).parent / "vendored" / "core"))
+def _load_asr(model_dir: Path, device: str, vendor: str = "core"):
+    # `vendor` selects which vendored wrapper code to import (core vs flex) --
+    # they diverge in transcribe()'s default auto-LID candidate set (F-005),
+    # so this must match which model's weights `model_dir` points at.
+    sys.path.insert(0, str(Path(__file__).parent / "vendored" / vendor))
     from indic_transcribe import IndicTranscribe
 
     return IndicTranscribe.from_pretrained(str(model_dir), device=device)
@@ -152,10 +155,11 @@ def main() -> int:
     parser.add_argument("--audio-root", type=Path, default=Path.cwd())
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--max-new-tokens", type=int, default=256)
+    parser.add_argument("--vendor", default="core", choices=["core", "flex"])
     args = parser.parse_args()
 
     samples = load_manifest(args.manifest)
-    asr = _load_asr(args.model_dir, args.device)
+    asr = _load_asr(args.model_dir, args.device, args.vendor)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("", encoding="utf-8")
     for index, sample in enumerate(samples, 1):
