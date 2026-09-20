@@ -127,9 +127,9 @@
       "action": "Re-run EXP-E iteration 2 on the same 4 recordings plus a larger stratified subset: add turn padding/context and replace the toy VAD/KMeans with a neural diarizer and a published DER. Report whether padding rescues short turns and update F-003 accordingly (narrow the claim if it does).",
       "receipt": "test -s code/results/summaries/exp-e-v2-summary.json && grep -q 'iteration 2' 60-findings/F-003-oracle-turns-fail-diarbench.md",
       "done_criterion": "EXP-E v2 summary exists and F-003 status updated.",
-      "status": "pending",
+      "status": "blocked",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "asr_url unset"
     },
     {
       "id": "expand-suite",
