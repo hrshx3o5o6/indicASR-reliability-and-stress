@@ -36,9 +36,9 @@
       "action": "Copy the SSD summary JSONs for EXP-A/B/C/D/E into code/results/summaries/ (small files only; no audio or weights) and write code/results/CHECKSUMS.sha256 over them. Update docs/REPRODUCE.md §12 item 2 to reflect that summaries are in-repo.",
       "receipt": "cd code/results && shasum -a 256 -c CHECKSUMS.sha256 >/dev/null && test -f summaries/exp-a-v1-summary.json && test -f summaries/exp-c-summary.json",
       "done_criterion": "CHECKSUMS.sha256 verifies all committed summaries.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "fix-expd-annotation-count",
