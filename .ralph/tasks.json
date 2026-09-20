@@ -101,9 +101,9 @@
       "action": "Score a second ASR baseline (vanilla nvidia/canary-1b-v2, or another Indic ASR) on the same 80-sample suite via the ASR service where available, and add a comparison column to REPORT.md §5.1/§6. Record model revision and decoding. This contextualises Core's 22.0% WER.",
       "receipt": "test -s code/results/summaries/second-baseline-summary.json && grep -q 'second baseline' REPORT.md",
       "done_criterion": "A second-baseline summary exists and REPORT.md mentions it.",
-      "status": "pending",
+      "status": "blocked",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "asr_url unset"
     },
     {
       "id": "exp-f-real-noise",
