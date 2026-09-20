@@ -49,9 +49,9 @@
       "action": "Determine why exp-d-semantic-curated-summary.json reports annotated_rows_scored=50 while REPORT.md/notes cite 11 number rows. Re-run score_exp_d_semantics.py on the curated annotations, record the true counts (number/date/currency/entity rows), and correct REPORT.md §5.4 and F-004 if needed. If the metric definition is ambiguous, state it explicitly.",
       "receipt": "grep -q 'annotated_rows_scored' code/results/summaries/exp-d-semantic-curated-summary.json && grep -q 'Reconciled' REPORT.md",
       "done_criterion": "A note in REPORT.md §5.4 saying 'Reconciled' with the corrected counts, and the summary artifact present with consistent counts.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "oiver",
