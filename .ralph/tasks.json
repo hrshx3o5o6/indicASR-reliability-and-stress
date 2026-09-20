@@ -88,9 +88,9 @@
       "action": "Re-download the current vendor code files (indic_transcribe.py, lid.py, long_form.py, inference.py, config/model files) to code/vendored/core/ and code/vendored/flex/ at a pinned revision, diff against the old snapshot 4d29eeb7a099, and record a summary in 40-pipeline/INFRA-NOTES.md and the model dossiers. Flag any code-level claim that changes.",
       "receipt": "test -f code/vendored/core/long_form.py && test -f code/vendored/core/REVISION && grep -q 're-vendored' 40-pipeline/INFRA-NOTES.md",
       "done_criterion": "New vendor files vendored, revision pinned, diff summarised in INFRA-NOTES.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "second-baseline",
