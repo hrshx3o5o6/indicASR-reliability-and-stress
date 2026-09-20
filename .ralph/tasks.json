@@ -114,9 +114,9 @@
       "action": "Execute the registered EXP-F (40-pipeline/experiments/EXP-F-real-noise.md): real market/call-center audio from kathbath/indicvoices short clips, matched against EXP-A synthetic-noise strata. Produce data/challenge/results/exp-f/ summary + per-sample records and record the falsifiable-target verdict in EXPERIMENT-OBSERVATIONS.",
       "receipt": "test -s code/results/summaries/exp-f-summary.json && grep -q 'EXP-F' 40-pipeline/EXPERIMENT-OBSERVATIONS.md",
       "done_criterion": "EXP-F summary exists with language/condition WER and the verdict recorded.",
-      "status": "pending",
+      "status": "blocked",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "asr_url unset"
     },
     {
       "id": "neural-diarizer",
