@@ -140,9 +140,9 @@
       "action": "Expand the suite with real speakers and natural conditions to 300-500 rows using the existing materializers and degradation chain, keeping the paired clean/degraded design and provenance. Define a tune/holdout split. Rerun EXP-A and update the summary tables; do not overwrite the v1 artifacts.",
       "receipt": "test $(wc -l < code/results/summaries/exp-a-v2-manifest.count) -ge 300",
       "done_criterion": "v2 manifest has >= 300 rows and a tune/holdout split is recorded.",
-      "status": "pending",
+      "status": "blocked",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "asr_url unset"
     },
     {
       "id": "human-verify-semantics",
