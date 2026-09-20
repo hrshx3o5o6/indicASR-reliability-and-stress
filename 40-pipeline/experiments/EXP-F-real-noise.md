@@ -2,10 +2,10 @@
 type: experiment
 id: EXP-F
 title: "Real-world noise robustness — market/call-center audio vs synthetic degradations"
-status: planned
-phase: ""
+status: done
+phase: v1-pilot-results
 depends: ["EXP-A"]
-updated: 2026-09-17
+updated: 2026-09-20
 ---
 
 # EXP-F — Real-world noise robustness
@@ -57,3 +57,27 @@ updated: 2026-09-17
 
 - Explicit `lang` vs auto-LID (above).
 - Near-duplicate check: confirm no speaker/content overlap between real-noise picks and EXP-A rows (independence).
+
+## v1 pilot results (2026-09-20)
+
+- Data: `ai4bharat/IndicVoices` (gated, HF), 56 clips, 7 languages (hi, kn, mai,
+  ml, ta, te, ur — bho dropped, no IndicVoices source, per the design's own
+  fallback rule). Condition proxy: `scenario` field — `Conversation`/`Extempore`
+  (spontaneous, real field recordings) = `real_noise`; `Read` = `real_clean`.
+  8 clips/language (4+4), all ≤30s, audio embedded in the dataset (no separate
+  download). Materializer: `code/scripts/materialize_exp_f.py`.
+- **Falsifiable target met, decisively.** Real noise vs. real clean: **+20.6
+  pts WER** (34.3%→13.7%... i.e. clean 13.7%, noise 34.3%), 95% CI [4.9, 36.4]
+  pts, excludes zero, p=0.009. Matched EXP-A synthetic noise vs. clean:
+  **+2.0 pts**, 95% CI [−5.4, +9.7] pts, includes zero, p=0.605 — not
+  distinguishable from no effect. Real degradation is ~4x the falsification
+  threshold this experiment was designed to test, and ~10x the synthetic
+  transform's own measured effect.
+- **Verdict: synthetic transforms materially overstate robustness** — this is
+  the "expected outcome" the design anticipated, now measured. Full writeup:
+  [[F-006-synthetic-noise-understates-real-noise|F-006]].
+- Artifacts: `data/challenge/results/exp-f-v1-{baseline,summary}.json` (SSD);
+  CIs in `code/results/stats/bootstrap.json` (`exp_f`,
+  `exp_a_synthetic_noise_vs_clean`).
+- Not yet done: auto-LID-under-real-noise comparison (design ablation #2) and
+  scaling past the 56-clip pilot.

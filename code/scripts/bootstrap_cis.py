@@ -76,6 +76,31 @@ def bootstrap_paired_diff_ci(a: np.ndarray, b: np.ndarray, n_boot: int = N_BOOT,
     }
 
 
+def bootstrap_unpaired_diff_ci(a: np.ndarray, b: np.ndarray, n_boot: int = N_BOOT, seed: int = RNG_SEED) -> dict:
+    """CI on mean(a) - mean(b) via independent resampling -- for two groups with
+    no natural per-item pairing (different samples, e.g. EXP-F real-noise vs
+    real-clean clips drawn from different speakers/utterances)."""
+    rng = np.random.default_rng(seed)
+    na, nb = len(a), len(b)
+    boot_diffs = np.array(
+        [a[rng.integers(0, na, na)].mean() - b[rng.integers(0, nb, nb)].mean() for _ in range(n_boot)]
+    )
+    lo, hi = np.percentile(boot_diffs, [2.5, 97.5])
+    mean_diff = float(a.mean() - b.mean())
+    p_ge = (boot_diffs <= 0).mean() if mean_diff > 0 else (boot_diffs >= 0).mean()
+    p_value = float(min(1.0, 2 * p_ge))
+    return {
+        "n_a": na,
+        "n_b": nb,
+        "mean_a": float(a.mean()),
+        "mean_b": float(b.mean()),
+        "mean_diff": mean_diff,
+        "diff_ci95": [float(lo), float(hi)],
+        "excludes_zero": bool(lo > 0 or hi < 0),
+        "bootstrap_p_two_sided": p_value,
+    }
+
+
 def bootstrap_auc_ci(labels: np.ndarray, scores: np.ndarray, n_boot: int = N_BOOT, seed: int = RNG_SEED) -> dict:
     rng = np.random.default_rng(seed)
     n = len(labels)
@@ -114,6 +139,7 @@ def main() -> int:
     parser.add_argument("--exp-b-decisions", type=Path, required=True)
     parser.add_argument("--exp-a-core-baseline", type=Path, default=None)
     parser.add_argument("--exp-a-flex-baseline", type=Path, default=None)
+    parser.add_argument("--exp-f-baseline", type=Path, default=None)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -166,6 +192,34 @@ def main() -> int:
             1 for i in bho_ids if flex_rows[i]["auto"]["lid"].get("lang") == "bho"
         )
         result["exp_a_flex_bho_lid"] = {"auto_lid_correct": wilson_ci(flex_bho_correct, len(bho_ids))}
+
+    # EXP-F: real-noise vs real-clean WER (unpaired -- different clips/speakers),
+    # plus the matched-language delta vs EXP-A's synthetic noise/clean conditions.
+    if args.exp_f_baseline and args.exp_a_core_baseline:
+        exp_f_rows = load_jsonl(args.exp_f_baseline)
+        real_noise = np.array(
+            [wer(r["reference"], r["explicit"]["transcript"]) for r in exp_f_rows if r["conditions"]["audio"][0] == "real_noise"]
+        )
+        real_clean = np.array(
+            [wer(r["reference"], r["explicit"]["transcript"]) for r in exp_f_rows if r["conditions"]["audio"][0] == "real_clean"]
+        )
+        result["exp_f"] = {
+            "real_noise_wer": bootstrap_mean_ci(real_noise),
+            "real_clean_wer": bootstrap_mean_ci(real_clean),
+            "unpaired_diff_real_noise_minus_real_clean": bootstrap_unpaired_diff_ci(real_noise, real_clean),
+        }
+        core_rows_all = load_jsonl(args.exp_a_core_baseline)
+        synth_noise = np.array(
+            [wer(r["reference"], r["explicit"]["transcript"]) for r in core_rows_all if r["conditions"]["audio"] == ["background_noise"]]
+        )
+        synth_clean = np.array(
+            [wer(r["reference"], r["explicit"]["transcript"]) for r in core_rows_all if r["conditions"]["audio"] == ["clean"]]
+        )
+        result["exp_a_synthetic_noise_vs_clean"] = {
+            "synthetic_noise_wer": bootstrap_mean_ci(synth_noise),
+            "synthetic_clean_wer": bootstrap_mean_ci(synth_clean),
+            "unpaired_diff_noise_minus_clean": bootstrap_unpaired_diff_ci(synth_noise, synth_clean),
+        }
 
     # C1: Bhojpuri auto-LID absorption, n=10, 0 successes -> Wilson CI (bootstrap
     # is degenerate at n=10 with a 0/10 point estimate; Wilson is the standard

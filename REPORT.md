@@ -2,7 +2,7 @@
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
 status: draft-reviewed
-version: 0.5
+version: 0.6
 updated: 2026-09-20
 model_snapshots:
   core: "bodhan-ai/indic-transcribe-core@e083ab7d"
@@ -11,17 +11,22 @@ model_snapshots:
 
 # Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model
 
-> **Draft, reviewed once (2026-09-20).** Every numeric claim below links to the
+> **Draft, reviewed (2026-09-20).** Every numeric claim below links to the
 > artifact that produced it, either committed under `code/results/` or on the
-> research SSD (`data/challenge/`, path noted per artifact). This pass: found
-> and fixed a pipeline bug that had produced a false near-total-failure claim
-> (§5.5/F-003, now retracted), reconciled an internal denominator
-> contradiction (§5.4), added bootstrap 95% CIs to every headline number
-> (§7), and closed the OI-WER TODO with a documented fallback definition
-> (§5.7/D-006). Remaining open items: EXP-F not run, single model snapshot
-> predating the 2026-09-15 vendor update, no dependency lockfile yet — all in
-> §8/§9. Do not move a claim from §7 into the Abstract until its artifact is
-> in the replication bundle (§9).
+> research SSD (`data/challenge/`, path noted per artifact). This pass: found,
+> fixed, and re-measured a pipeline bug that had produced a false
+> near-total-failure claim (§5.5/F-003, real result: +9pt improvement from
+> oracle turns, naive auto-diarization worse than nothing), reconciled an
+> internal denominator contradiction (§5.4), re-vendored both models and
+> found a real Core/Flex divergence on Bhojpuri LID (§5.8/F-005), ran
+> the previously-unrun real-noise pilot and found our own synthetic transform
+> understates real degradation ~10x (§5.6/F-006), added bootstrap 95% CIs to
+> every headline number (§7), closed the OI-WER TODO (§5.7/D-006), and locked
+> dependencies + committed the replication bundle (§9). Remaining open items:
+> suite expansion past 80 samples, a neural diarizer rerun of EXP-E, human
+> semantic verification of the 19 flagged EXP-D rows — all in §8/§9. Do not
+> move a claim from §7 into the Abstract until its artifact is in the
+> replication bundle (§9).
 
 ---
 
@@ -30,16 +35,16 @@ model_snapshots:
 State-of-the-art Indic ASR is no longer the dominant bottleneck: the released model
 scores well on its own benchmark. The bottleneck is knowing when a transcription can
 be trusted and why it fails. We characterize the reliability envelope of
-`indic-transcribe-core` and sibling `indic-transcribe-flex` on an 80-sample suite
-spanning 8 languages, three audio conditions. Vendor-reported Hindi-belt LID absorption
-reproduces on Core (Bhojpuri auto-LID 0/10) but not Flex (4/10, absorbed by Maithili not
-Hindi) despite statistically tied WER — absorption is model-specific, not
-architecture-wide. Flex mixed-mode ITN collapses currency recall 100%→0% while raising
-WER. A naive automatic diarizer makes multi-speaker transcription measurably worse than
-no diarization (82.6% vs 66.6% WER); oracle turns help only modestly (57.7%). Top-3
-candidate generation contains real headroom (22.38% vs 24.87% WER) a likelihood reranker
-fails to capture. Every headline number carries a bootstrap 95% CI. Suite, runners,
-per-sample results released. *Scope: small, partly synthetic, directional.*
+`indic-transcribe-core` and sibling `indic-transcribe-flex` on an 80-sample suite plus
+a 56-clip real-noise pilot. Our own synthetic noise transform, used throughout,
+understates real-world degradation by roughly 10x: real noise costs +20.6 WER points
+(95% CI [4.9,36.4], p=0.009) versus a statistically null +2.0 points from synthetic
+noise. Vendor-reported Hindi-belt LID absorption reproduces on Core (Bhojpuri 0/10) but
+not Flex (4/10, absorbed by Maithili not Hindi) despite tied WER — absorption is
+model-specific. Flex mixed-mode ITN collapses currency recall 100%→0% while raising
+WER. A naive automatic diarizer makes multi-speaker transcription worse than no
+diarization (82.6% vs 66.6%). Every headline number carries a bootstrap 95% CI. Suite,
+runners, results released. *Scope: small, partly synthetic/real-pilot, directional.*
 
 ---
 
@@ -58,7 +63,10 @@ per-sample results released. *Scope: small, partly synthetic, directional.*
      kept in the report as a worked example of catching a bad number before publication.
   6. A code-audit finding, not present in either vendor card, that Core and
      Flex diverge on default auto-LID candidate restriction (`F-005`).
-- **Not claimed:** model quality verdict, real-world noise robustness, code-mixing.
+  7. Evidence that this project's own synthetic noise transform, used
+     throughout, understates real-world degradation by roughly 10x (`F-006`).
+- **Not claimed:** model quality verdict, full real-world noise robustness
+  characterization (n=56 pilot, one real corpus), code-mixing.
 
 ## 2. System under test
 
@@ -185,8 +193,26 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
   short-turn ASR weakness. Strengthens rather than removes the case for a
   real neural diarizer + turn padding before shipping any multi-speaker path.
 
-### 5.6 EXP-F — Real-noise robustness (registered, not run)
-- Design and falsifiable targets: `EXP-F-real-noise.md`. No artifact yet.
+### 5.6 EXP-F — Real-noise robustness
+- **Falsifiable target met, decisively.** 56 real clips, 7 languages, from
+  `ai4bharat/IndicVoices` (bho absent from that corpus, dropped per design).
+  Real noise vs. real clean (unpaired, different speakers/clips): clean
+  **13.7%** → noise **34.3%** WER, **+20.6 pts**, 95% CI [4.9, 36.4] pts,
+  excludes zero, p=0.009. Matched EXP-A **synthetic** noise vs. clean: 21.2%
+  → 23.2%, **+2.0 pts**, 95% CI [−5.4, +9.7] pts, includes zero, p=0.605 —
+  not distinguishable from no effect.
+- **This project's own synthetic noise transform, used throughout EXP-A/D/E,
+  understates real-world degradation by roughly an order of magnitude.**
+  Every "noise" condition result elsewhere in this report characterizes
+  robustness to mild deterministic degradation only, not real acoustic
+  conditions.
+- Condition proxy: IndicVoices' `scenario` field (`Conversation`/`Extempore`
+  = real_noise, `Read` = real_clean) — not a controlled SNR measurement; some
+  of the gap may be spontaneous-speech disfluency rather than pure acoustic
+  noise (see `F-006` limits).
+- Artifacts: `code/results/summaries/exp-f-v1-{baseline,summary}.json`, CI:
+  `code/results/stats/bootstrap.json` (`exp_f`,
+  `exp_a_synthetic_noise_vs_clean`). Full writeup: `F-006`.
 
 ### 5.7 OI-WER re-scoring (project definition)
 - No public reference implementation of the vendor's OI-WER exists, and the
@@ -237,7 +263,12 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 
 ## 6. Results synthesis
 
-- Failure surface is **language/LID**, not audio quality, in this slice.
+- Failure surface is **language/LID**, not audio quality — **but only under
+  synthetic degradation**. Real noise (§5.6/C8/F-006) costs +20.6 WER points,
+  larger than any single-language WER spread in EXP-A; the "audio quality
+  doesn't matter much" conclusion from earlier sections does not survive
+  contact with real conditions and should not be generalized past the
+  synthetic transforms this project used everywhere else.
 - The LID failure surface is **model-specific, not architecture-wide**: Core
   and Flex are tied on transcription WER but diverge sharply on Bhojpuri
   auto-LID (0/10 vs 4/10) with different confusion targets (Hindi vs
@@ -261,6 +292,7 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 | C5 | Vendor OI-WER does not transfer to this slice | EXP-A whitespace WER 22.0 / project OI-WER 19.9 vs vendor's reported OI-WER 8.7 (§5.7) | high (categorical; formatting tolerance closes only ~2 of ~13 points) | different corpus; still not the vendor's own OI-WER definition |
 | C6 | Interpretable features do not predict errors here | EXP-B AUC 0.515, bootstrap 95% CI [0.387, 0.646] (spans 0.5) | medium-high — CI confirms "no better than chance," not just a point estimate | n=80, provisional label |
 | C7 | Core and Flex are not symmetric on Bhojpuri auto-LID: Flex recovers 4/10 where Core gets 0/10, via a different confusion pattern (absorbed by Maithili, not Hindi); overall WER is tied between the two models | §5.8: paired bootstrap on 80 matched samples, WER diff CI [-1.5,+1.2]pts (p=0.83, tied); bho Wilson CI [16.8%,68.7%] vs Core's [0%,27.8%]. Code-level asymmetry (Flex-only `RECOMMENDED_LANGS` default restriction, F-005) found first but does **not** explain the Bhojpuri effect (bho not in the excluded set) | high — real inference run, both models, matched samples | cause of the Bhojpuri gap is unexplained; vendor's own 337k-clip number for the *documented* restriction (pa 0.620→0.775, unrelated to bho) not independently verified |
+| C8 | This project's own synthetic noise transform understates real-world noise degradation by ~10x — every EXP-A/D/E "noise" result characterizes mild deterministic degradation only | §5.6/F-006: real noise−clean +20.6pts CI[4.9,36.4] p=0.009 (excludes zero) vs synthetic noise−clean +2.0pts CI[-5.4,+9.7] p=0.605 (includes zero), n=28/28 real, n=24/32 synthetic, 7 matched languages | high — statistically significant real effect vs. statistically null synthetic effect | n=56 pilot, n=4/language/condition for per-language deltas; `scenario` is a proxy for real conditions, not controlled SNR; bho untested (no IndicVoices source) |
 
 Bootstrap methodology and full numbers: `code/scripts/bootstrap_cis.py` → `code/results/stats/bootstrap.json` (10,000 resamples, seed 20260920, paired bootstrap for within-sample comparisons, Wilson score interval for the n=10 binomial).
 
@@ -315,8 +347,10 @@ production-safety statement; DER quality of neural diarization.
 - C. Engineering log (`90-journal/`).
 - D. Known discrepancies and fixes: §5.4 EXP-D annotation-count reconciliation;
   §5.5 EXP-E transcribe-bug found/fixed/re-measured (F-003); §5.7 OI-WER
-  fallback (D-006); §2 code-audit finding F-005 (Flex-only auto-LID
-  restriction, C7).
+  fallback (D-006); §2/§5.8 code-audit + empirical finding F-005 (Flex-only
+  auto-LID restriction, Core/Flex Bhojpuri divergence, C7); §5.6 real-noise
+  pilot correcting the "audio quality doesn't matter much" synthetic-only
+  conclusion (F-006, C8).
 
 ---
 
@@ -326,8 +360,8 @@ production-safety statement; DER quality of neural diarization.
 |---|---|---|
 | §5.1–5.4 | SSD summary JSON + `code/results/stats/bootstrap.json` | filled, CI-backed |
 | §5.5 (EXP-E) | `F-003`, SSD `exp-e-v2/exp-e-pilot-summary.json` | **re-measured 2026-09-20** — bug found, fixed, real numbers in |
-| §5.6 (EXP-F) | `EXP-F-real-noise.md` | not run — needs live ASR service |
+| §5.6 (EXP-F) | `EXP-F-real-noise.md`, `F-006` | **run 2026-09-20** — falsifiable target met |
 | §5.7 (OI-WER) | `code/results/summaries/exp-a-v1-oiwer-summary.json` | filled 2026-09-20 |
 | §5.8 (second baseline) | `code/results/summaries/exp-a-v1-flex-*.json`, bootstrap.json | filled 2026-09-20, unblocked P-task from Ralph loop |
-| §7 C1–C7 | findings `F-001..005` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
+| §7 C1–C8 | findings `F-001..006` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
 | Lockfile / full repro bundle | — | still TODO (§9) |

@@ -172,8 +172,8 @@ Planning pass for publication + a sandboxed verification loop. Full detail in
 ## Next actions
 
 - **Immediate next experiment:** improve EXP-E with turn padding/context and a neural diarizer, then rerun on a larger stratified subset.
-- **Registered, not started:** [[EXP-F-real-noise|EXP-F]] — real market/call-center audio vs EXP-A's synthetic degradations (matched-pair design). Currently the strongest test of the vendor's "robust in noisy real-world conditions" claim; SSD-independent (short-clip subsets < 2 GB, internal disk).
-- **Re-vendor Core/Flex code:** the HF repos changed on 2026-09-15 (`long_form.py`, `inference.py` added; possibly `indic_transcribe.py`/`lid.py` diffs). Our snapshot `4d29eeb7a099` predates it — diff before drawing further code-level conclusions.
+- **Run 2026-09-20:** [[EXP-F-real-noise|EXP-F]] — real IndicVoices audio vs EXP-A's synthetic degradations, 56 clips, 7 languages. Falsifiable target met decisively: real noise costs +20.6 WER points (statistically significant), synthetic noise costs +2.0 (statistically null). This project's own synthetic degradations materially understate the vendor's "robust in noisy real-world conditions" claim's real test — see [[F-006-synthetic-noise-understates-real-noise|F-006]].
+- ~~**Re-vendor Core/Flex code**~~ — **done 2026-09-20.** Both re-vendored to current HF revisions; diff summarized in `20-models/*`, new finding [[F-005-flex-only-auto-lid-restriction|F-005]].
 - **EXP-D follow-up (optional):** human-review the 19 flagged rows if publication-grade semantic metrics are needed; this does not change the current no-go decision for Flex mixed.
 - **EXP-E immediate:** inspect Hindi/Tamil parquet schemas, sample conversations, validate speaker/turn/audio fields, then establish no-diarization and oracle-turn baselines.
 - **EXP-E inventory:** Hindi 94 recordings / 10.74 hours / 8,665 segments; Tamil 93 recordings / 9.98 hours / 10,474 segments.
@@ -222,7 +222,7 @@ Planning pass for publication + a sandboxed verification loop. Full detail in
 - EXP-E pilot results (VOID, pre-bug-fix): `data/challenge/results/exp-e/exp-e-pilot-results.jsonl`
 - EXP-E pilot results (real, 2026-09-20): `data/challenge/results/exp-e-v2/exp-e-pilot-results.jsonl`
 - EXP-E pilot summary (real, 2026-09-20): `data/challenge/results/exp-e-v2/exp-e-pilot-summary.json`
-- EXP-F protocol: [[EXP-F-real-noise]] (planned; no artifacts yet — run internally, migrate to SSD when next mounted)
+- EXP-F protocol: [[EXP-F-real-noise]] (done 2026-09-20; artifacts in `code/results/summaries/exp-f-v1-*` and on SSD)
 
 ## Maintenance rule
 
