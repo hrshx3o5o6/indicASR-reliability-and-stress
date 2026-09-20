@@ -23,9 +23,9 @@
       "action": "Freeze the working environment into code/requirements.lock (pip freeze against the SSD venv) and add pins for fastapi/uvicorn/pydantic/httpx. Document install step in docs/REPRODUCE.md §6. Do not upgrade packages.",
       "receipt": "test -s code/requirements.lock && grep -qiE '^(torch|transformers|fastapi)==' code/requirements.lock",
       "done_criterion": "code/requirements.lock is non-empty and contains pinned torch/transformers/fastapi lines.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "commit-artifacts",
