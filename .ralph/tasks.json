@@ -75,9 +75,9 @@
       "action": "Add a script that computes bootstrap 95% CIs for mean WER per language/condition and a paired test between baseline and oracle top-K (EXP-C) and between Core native and Flex mixed (EXP-D), from cached per-sample files. Output code/results/stats/bootstrap.json. Note small-n caveats.",
       "receipt": "test -s code/results/stats/bootstrap.json && python3 -c \"import json;d=json.load(open('code/results/stats/bootstrap.json'));assert 'exp_c' in d and 'exp_d' in d\"",
       "done_criterion": "bootstrap.json exists containing exp_c and exp_d entries.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "re-vendor",
