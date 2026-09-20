@@ -25,36 +25,21 @@ model_snapshots:
 
 ---
 
-## Abstract (draft)
+## Abstract
 
 State-of-the-art Indic ASR is no longer the dominant bottleneck: the released model
-scores well on its own benchmark. The bottleneck is knowing *when* a transcription can
-be trusted and *why* it fails. We characterize the reliability envelope of
-`indic-transcribe-core` (1.2B, 25 languages) and its sibling `indic-transcribe-flex`
-on a deliberately structured 80-sample challenge suite spanning 8 languages and three
-audio conditions. We reproduce the vendor's documented Hindi-belt language-identification
-absorption on Core (Bhojpuri auto-LID 0/10), then show this is model-specific, not a
-family-wide property: a second baseline on the sibling Flex model recovers 4/10 on the
-same 10 clips — absorbed mostly by Maithili, not Hindi, when wrong — while the two models
-are statistically tied on overall transcription WER (paired 95% CI spans zero). We show
-that top-3 candidate generation contains
-recoverable headroom (oracle WER 22.38% vs 24.87% baseline) while likelihood-based
-reranking fails, demonstrate that Flex's built-in mixed-mode ITN collapses currency
-surface recall from 100% to 0% (n=3 currency-bearing rows), and report a
-found-fixed-and-remeasured pipeline bug: an initial claim that the vendor's
-diarize-then-transcribe remedy produces near-total failure (WER ~99.8%) even
-with oracle boundaries turned out to be a string-indexing error that
-truncated every EXP-E transcript to ~1 character; after the fix, the real
-oracle-turn WER is 57.7% — still far from usable, but a genuine ~9-point
-improvement over no diarization (66.6%), and the naive automatic diarizer
-tested makes things measurably *worse* than doing nothing (82.6%).
-A project-defined, normalization-tolerant OI-WER (no public vendor definition
-exists) narrows but does not close the gap to the vendor's reported average
-(19.9% vs 8.7%), and every headline comparison carries a bootstrap 95%
-confidence interval. We release the suite, runners, and per-sample results.
-*Scope: small, partly synthetic, directional.*
-
-**TODO:** tighten to ≤150 words once §7 is frozen.
+scores well on its own benchmark. The bottleneck is knowing when a transcription can
+be trusted and why it fails. We characterize the reliability envelope of
+`indic-transcribe-core` and sibling `indic-transcribe-flex` on an 80-sample suite
+spanning 8 languages, three audio conditions. Vendor-reported Hindi-belt LID absorption
+reproduces on Core (Bhojpuri auto-LID 0/10) but not Flex (4/10, absorbed by Maithili not
+Hindi) despite statistically tied WER — absorption is model-specific, not
+architecture-wide. Flex mixed-mode ITN collapses currency recall 100%→0% while raising
+WER. A naive automatic diarizer makes multi-speaker transcription measurably worse than
+no diarization (82.6% vs 66.6% WER); oracle turns help only modestly (57.7%). Top-3
+candidate generation contains real headroom (22.38% vs 24.87% WER) a likelihood reranker
+fails to capture. Every headline number carries a bootstrap 95% CI. Suite, runners,
+per-sample results released. *Scope: small, partly synthetic, directional.*
 
 ---
 

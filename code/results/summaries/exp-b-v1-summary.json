@@ -1,0 +1,173 @@
+{
+  "sample_count": 80,
+  "acceptable_wer_threshold": 0.2,
+  "acceptable_count": 46,
+  "unacceptable_count": 34,
+  "threshold_accept": 1.0,
+  "threshold_warn": 1.0,
+  "threshold_sensitivity": [
+    {
+      "target_risk": 0.1,
+      "minimum_coverage": 0.25,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.1,
+      "minimum_coverage": 0.5,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.2,
+      "minimum_coverage": 0.25,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.2,
+      "minimum_coverage": 0.5,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.25,
+      "minimum_coverage": 0.25,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.25,
+      "minimum_coverage": 0.5,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.3,
+      "minimum_coverage": 0.25,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.3,
+      "minimum_coverage": 0.5,
+      "threshold": 1.0,
+      "coverage": 0.0,
+      "observed_risk": null
+    },
+    {
+      "target_risk": 0.35,
+      "minimum_coverage": 0.25,
+      "threshold": 0.5343137704911465,
+      "coverage": 0.5,
+      "observed_risk": 0.35
+    },
+    {
+      "target_risk": 0.35,
+      "minimum_coverage": 0.5,
+      "threshold": 0.5343137704911465,
+      "coverage": 0.5,
+      "observed_risk": 0.35
+    },
+    {
+      "target_risk": 0.4,
+      "minimum_coverage": 0.25,
+      "threshold": 0.5108073153385182,
+      "coverage": 0.5625,
+      "observed_risk": 0.4
+    },
+    {
+      "target_risk": 0.4,
+      "minimum_coverage": 0.5,
+      "threshold": 0.5108073153385182,
+      "coverage": 0.5625,
+      "observed_risk": 0.4
+    },
+    {
+      "target_risk": 0.5,
+      "minimum_coverage": 0.25,
+      "threshold": 0.0956461391385755,
+      "coverage": 1.0,
+      "observed_risk": 0.425
+    },
+    {
+      "target_risk": 0.5,
+      "minimum_coverage": 0.5,
+      "threshold": 0.0956461391385755,
+      "coverage": 1.0,
+      "observed_risk": 0.425
+    }
+  ],
+  "oof_risk_coverage": {
+    "points": [
+      {
+        "coverage": 0.25,
+        "risk": 0.35
+      },
+      {
+        "coverage": 0.5,
+        "risk": 0.35
+      },
+      {
+        "coverage": 0.75,
+        "risk": 0.48333333333333334
+      },
+      {
+        "coverage": 1.0,
+        "risk": 0.425
+      }
+    ],
+    "aurc": 0.4037176580930444
+  },
+  "oof_roc_auc": 0.5153452685421995,
+  "oof_average_precision": 0.6152329805381749,
+  "oof_brier_score": 0.27899364236937974,
+  "decision_counts": {
+    "accept": 0,
+    "warn": 0,
+    "abstain": 80
+  },
+  "feature_names": [
+    "lid_top1_probability",
+    "lid_top2_probability",
+    "lid_margin",
+    "lid_entropy",
+    "lid_plausible_count",
+    "explicit_auto_lid_agreement",
+    "warning_count",
+    "audio_duration_seconds",
+    "audio_rms",
+    "audio_clipping_ratio",
+    "audio_silence_ratio",
+    "transcript_word_count",
+    "transcript_char_count",
+    "transcript_repetition_ratio"
+  ],
+  "removed_constant_features": [
+    "transcript_script_consistency"
+  ],
+  "full_fit_coefficients": {
+    "lid_top1_probability": 0.12166655005417927,
+    "lid_top2_probability": -0.1366864908673813,
+    "lid_margin": 0.12909651128937136,
+    "lid_entropy": 0.3403614914436246,
+    "lid_plausible_count": -0.054380551903805675,
+    "explicit_auto_lid_agreement": -0.22621710216661292,
+    "warning_count": 0.775182713418366,
+    "audio_duration_seconds": -0.3191552980441272,
+    "audio_rms": -0.4019418931875812,
+    "audio_clipping_ratio": -0.15184976348408127,
+    "audio_silence_ratio": -0.3859475605129921,
+    "transcript_word_count": -0.5816060412399741,
+    "transcript_char_count": 0.26404894631603043,
+    "transcript_repetition_ratio": -0.4176948472908659
+  },
+  "note": "OOF metrics are pilot estimates; thresholds are policy targets, not learned ground truth."
+}

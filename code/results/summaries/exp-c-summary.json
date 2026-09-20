@@ -1,0 +1,10 @@
+{
+  "sample_count": 80,
+  "top_k": 3,
+  "truth_in_topk": 79,
+  "baseline_auto_wer": 0.24865184901701703,
+  "adaptive_selected_wer": 0.2499921753573434,
+  "oracle_topk_wer": 0.22381160305608142,
+  "adaptive_selected_lid_accuracy": 0.875,
+  "note": "Oracle WER is diagnostic only; adaptive selection uses LID prior plus mean decoder token log-probability."
+}

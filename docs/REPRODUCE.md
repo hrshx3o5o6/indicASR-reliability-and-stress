@@ -96,10 +96,18 @@ Core snapshot SHA. Record the SHA — all recorded numbers used `4d29eeb7a099`.
 ```bash
 cd code
 uv venv .venv --python 3.12
-uv pip install --python .venv/bin/python \
-  "torch" "torchaudio" "transformers" "sentencepiece" "soundfile" \
-  "huggingface_hub" jiwer pandas scikit-learn librosa
+uv pip sync --python .venv/bin/python requirements.lock
 ```
+
+`requirements.lock` (committed 2026-09-20) is a frozen `uv pip freeze` snapshot of
+the environment every experiment in this report actually ran against — torch 2.14.0,
+transformers 5.17.0, etc. Regenerate it after any dependency change with
+`uv pip freeze --python .venv/bin/python > requirements.lock`. It does **not**
+include `fastapi`/`uvicorn`/`pydantic` — those are only needed for the optional
+model-as-a-service pattern (§15), never actually stood up locally; every
+experiment in this report loaded the model in-process instead. Install them
+separately (`uv pip install --python .venv/bin/python fastapi uvicorn pydantic`)
+only if you use §15.
 
 ## 7. Model download and local loader
 
@@ -227,16 +235,18 @@ cd code
 
 ## 12. Reproducibility gaps to close before publication
 
-1. **Lock dependencies** — replace loose `requirements.txt` with a lockfile.
-2. **Commit summaries + checksums** — summary JSONs and SHA-256 of audio/manifests
-   must live in-repo (or a release bundle); large blobs stay out.
+1. ~~**Lock dependencies**~~ — **closed 2026-09-20**, `code/requirements.lock`.
+2. **Commit summaries + checksums** — most experiment summaries now live in
+   `code/results/summaries/` (2026-09-20); still missing per-sample checksums
+   and the raw EXP-A/B/C/D Core per-sample JSONL (still SSD-only).
 3. **Single entry point** — add `make repro` (or `scripts/repro.sh`) that chains §7–§10.
 4. **Parameterize paths** — remove hardcoded SSD/symlink assumptions.
 5. **Log seeds and decode config** — write `seed`, `device`, `torch`/`transformers`
    versions into every result JSON.
-6. **Re-vendor** vendor code after the 2026-09-15 HF update and pin both revisions.
-7. **Reconcile** the EXP-D annotation count discrepancy (`annotated_rows_scored: 50`
-   vs "11 number rows") noted in `REPORT.md` §5.4.
+6. ~~**Re-vendor** vendor code after the 2026-09-15 HF update~~ — **closed
+   2026-09-20**, `code/vendored/{core,flex}/REVISION`.
+7. ~~**Reconcile** the EXP-D annotation count discrepancy~~ — **closed
+   2026-09-20**, `REPORT.md` §5.4.
 
 ## 13. Troubleshooting
 

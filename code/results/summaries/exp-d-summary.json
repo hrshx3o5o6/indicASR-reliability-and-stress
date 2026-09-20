@@ -1,0 +1,31 @@
+{
+  "sample_count": 80,
+  "successful_count": 80,
+  "elapsed_seconds": 3074.742,
+  "mean_wer": {
+    "core_native": 0.22013513246784613,
+    "flex_native": 0.2208585821597906,
+    "flex_mixed": 0.335420901088724
+  },
+  "by_condition": {
+    "background_noise": {
+      "sample_count": 24,
+      "core_native": 0.2319568064136315,
+      "flex_native": 0.22524878184275823,
+      "flex_mixed": 0.3280379095279139
+    },
+    "clean": {
+      "sample_count": 32,
+      "core_native": 0.2115486177817115,
+      "flex_native": 0.2103991397096136,
+      "flex_mixed": 0.3458054034761865
+    },
+    "telephone": {
+      "sample_count": 24,
+      "core_native": 0.21976214477024028,
+      "flex_native": 0.23041430574372565,
+      "flex_mixed": 0.328957889466251
+    }
+  },
+  "semantic_annotation_status": "missing; semantic-slot and entity scores not computed"
+}

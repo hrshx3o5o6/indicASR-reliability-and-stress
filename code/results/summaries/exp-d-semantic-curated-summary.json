@@ -1,0 +1,1998 @@
+{
+  "annotated_rows_scored": 50,
+  "annotation_scope": "curated number slots scored by exact spoken surface or digit value",
+  "mean_slot_recall": {
+    "core_native": 0.0,
+    "flex_native": 0.0,
+    "flex_mixed": 0.7727272727272727
+  },
+  "mean_surface_recall": {
+    "core_native": 0.5909090909090909,
+    "flex_native": 0.5909090909090909,
+    "flex_mixed": 0.7727272727272727
+  },
+  "mean_date_recall": {
+    "core_native": 0.0,
+    "flex_native": 0.0,
+    "flex_mixed": 0.0
+  },
+  "mean_currency_recall": {
+    "core_native": 1.0,
+    "flex_native": 1.0,
+    "flex_mixed": 0.0
+  },
+  "mean_entity_recall": {
+    "core_native": 0.4957264957264957,
+    "flex_native": 0.6025641025641025,
+    "flex_mixed": 0.20512820512820512
+  },
+  "warning": "Surface recall accepts exact spoken phrases or digit values; it is not a full semantic evaluation and does not handle transliteration or compositional number variants.",
+  "rows": [
+    {
+      "sample_id": "regional-bho-001",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": true,
+      "has_entities": false,
+      "expected_numbers": [
+        93000
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          93000
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-002",
+      "has_numbers": true,
+      "has_dates": true,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        993,
+        3357965065685455
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          993,
+          2028,
+          3357965065685455
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-003",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "regional-bho-004",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        60035000426
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          60035000426
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-001-background_noise",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": true,
+      "has_entities": false,
+      "expected_numbers": [
+        93000
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          93000
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-002-background_noise",
+      "has_numbers": true,
+      "has_dates": true,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        993,
+        3357965065685455
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          993,
+          2028,
+          3357965065685455
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-003-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "regional-bho-001-telephone",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": true,
+      "has_entities": false,
+      "expected_numbers": [
+        93000
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          93000
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-002-telephone",
+      "has_numbers": true,
+      "has_dates": true,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        993,
+        3357965065685455
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          993,
+          2028,
+          3357965065685455
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 1.0
+      },
+      "surface_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 1.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-bho-003-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.5,
+        "flex_native": 0.5,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1602",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1601",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1608",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          2
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1607",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        30
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          0,
+          5
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1602-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1601-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1608-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          2
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1602-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1601-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-hi-1608-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          2
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1620",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1516",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.5,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1625",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1574",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1620-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1516-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1625-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1620-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1516-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-kn-1625-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-mai-001",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-mai-001-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "regional-mai-001-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ml-1538",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.3333333333333333,
+        "flex_native": 0.3333333333333333,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ml-1622",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-ml-1538-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.3333333333333333,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ml-1538-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.3333333333333333,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ta-1644",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ta-1644-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ta-1644-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 1.0
+      }
+    },
+    {
+      "sample_id": "fleurs-te-1538",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-te-1652",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 1.0,
+        "flex_native": 1.0,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-te-1538-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-te-1538-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1643",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        14,
+        19500
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          14,
+          1950
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1538",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1643-background_noise",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        14,
+        19500
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          14,
+          1950
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1538-background_noise",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1643-telephone",
+      "has_numbers": true,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": false,
+      "expected_numbers": [
+        14,
+        19500
+      ],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": [
+          14,
+          1950
+        ]
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.5
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    },
+    {
+      "sample_id": "fleurs-ur-1538-telephone",
+      "has_numbers": false,
+      "has_dates": false,
+      "has_currency": false,
+      "has_entities": true,
+      "expected_numbers": [],
+      "found_numbers": {
+        "core_native": [],
+        "flex_native": [],
+        "flex_mixed": []
+      },
+      "slot_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "surface_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "date_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "currency_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      },
+      "entity_recall": {
+        "core_native": 0.0,
+        "flex_native": 0.0,
+        "flex_mixed": 0.0
+      }
+    }
+  ]
+}
