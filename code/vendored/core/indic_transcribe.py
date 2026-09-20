@@ -23,19 +23,39 @@ close neighbour. A wrong language yields confidently wrong *script* rather than
 obvious errors, so ``lang=None`` warns when it lands on one of the weak classes.
 
 This wrapper deliberately does NOT chunk long audio. The checkpoint trains at
-``max_duration: 30`` and whole-file decoding degrades badly past about a minute
--- a 221 s file produced 149 words against a 450-word reference -- so anything
-longer than ``max_seconds`` raises rather than silently returning a short
-transcript. Use the serving engine for long-form and for batching.
+``max_duration: 30``; past roughly that length a single decoding pass collapses
+into repetition rather than degrading gracefully (on a 154 s file, 4-gram repetition
+rises 40% -> 91% and WER 88% -> 249% as the token budget is raised, so the extra
+tokens are loops, not speech). The decoder also has a fixed 1024-position table, so
+no single pass covers long audio at any setting. Anything longer than
+``max_seconds`` therefore raises rather than returning a fluent wrong transcript. For long audio use ``long_form.transcribe_long``, which ships in this
+repository: it cuts the audio at natural pauses into <=30 s pieces and decodes each.
 """
 
 from __future__ import annotations
 
+import logging
 import os
 import warnings
 from collections.abc import Sequence
 
 import torch
+
+# generation_config.json sets max_length=1024 (the decoder's position table), so every
+# generate() call that passes max_new_tokens logs "Both `max_new_tokens` and `max_length`
+# seem to have been set" -- once per chunk on long audio. max_new_tokens takes precedence
+# either way; this drops only that line, and only while our own generate() runs.
+_GEN_LOG = logging.getLogger("transformers.generation.utils")
+
+
+class _QuietLengthClash(logging.Filter):
+    def filter(self, record):
+        msg = record.getMessage()
+        return not ("`max_new_tokens`" in msg and "seem to have been set" in msg)
+
+
+_QUIET_LENGTH_CLASH = _QuietLengthClash()
+
 
 try:
     from .lid import RECOMMENDED_LANGS, TRAINED_LANGS, lid_from_encoder_states  # noqa: F401
@@ -139,7 +159,7 @@ class IndicTranscribe:
         return self.transcribe(audio, lang, mode, **kw)
 
     def transcribe(self, audio, lang: str | None = None, mode: str = "native",
-                   max_new_tokens: int = 256, return_lid: bool = False,
+                   max_new_tokens: int = 512, return_lid: bool = False,
                    allowed_langs: Sequence[str] | None = None, **generate_kwargs):
         """Transcribe one clip. ``mode`` is native / mixed / romanised.
 
@@ -159,8 +179,11 @@ class IndicTranscribe:
             raise ValueError(
                 f"audio is {seconds:.0f}s; this wrapper decodes whole files and the "
                 f"checkpoint degrades past ~{self.max_seconds:.0f}s (it trains at "
-                "max_duration 30). Use the serving engine's chunked long-form path, "
-                "or raise max_seconds to accept a truncated transcript."
+                "max_duration 30). For long audio use the chunked helper that ships "
+                "in this repository:\n"
+                "    from long_form import transcribe_long\n"
+                "    text = transcribe_long(asr, audio, lang='hi')\n"
+                "Or raise max_seconds to accept a truncated transcript."
             )
 
         feats, mask = self._features(wav)
@@ -192,8 +215,12 @@ class IndicTranscribe:
         with torch.inference_mode():
             kw = dict(attention_mask=mask, decoder_input_ids=ids,
                       max_new_tokens=max_new_tokens, **generate_kwargs)
-            out = (self.model.generate(input_features=feats, **kw) if enc is None
-                   else self.model.generate(encoder_outputs=enc, **kw))
+            _GEN_LOG.addFilter(_QUIET_LENGTH_CLASH)
+            try:
+                out = (self.model.generate(input_features=feats, **kw) if enc is None
+                       else self.model.generate(encoder_outputs=enc, **kw))
+            finally:
+                _GEN_LOG.removeFilter(_QUIET_LENGTH_CLASH)
         # strip with the SAME prompt used to generate -- a mismatch raises here
         text = self.tokenizer.decode(
             self.tokenizer.strip_prompt_and_trim(out[0].tolist(), prompt)

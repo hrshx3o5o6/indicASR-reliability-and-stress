@@ -1,6 +1,6 @@
 ---
 type: model
-updated: 2026-09-17
+updated: 2026-09-20
 hf: "bodhan-ai/indic-transcribe-flex"
 params: "1.2B"
 languages: 27
@@ -63,4 +63,31 @@ Full re-fetch: `/tmp/flex-card.md` (verbatim copy, 2026-09-17). Card body largel
 
 **Claimable statements:** see [[indic-transcribe-core]] re-check §claimable — the Flex mixed no-go ([[F-004]]) is the strongest Flex-specific evidence.
 
-Related: [[indic-transcribe-core]] · [[canary-1b-v2]] · [[F-001-hindi-belt-lid-absorption|F-001]] · [[F-004-flex-mixed-critical-values|F-004]] · [[lid-reliability]]
+## Re-vendor + card re-check 2026-09-20
+
+**First time Flex has been vendored** (previously only Core was — a real gap,
+now closed). Current HF revision `c0db6b2b...`, text/code files only, see
+`code/vendored/flex/REVISION`.
+
+- Card diff vs the 09-17 fetch (`/tmp/flex-card.md`): only the new NeMo
+  checkpoint section was added (same as Core — `nemo/` dir, `transcribe_long_nemo`,
+  vendor-claimed 77x realtime / 9.2 GiB GPU for 1 hour audio, untested by us).
+  Every other section (limitations, LID accuracy table, mode descriptions,
+  competitive benchmark table) is byte-identical to the 09-17 capture.
+- **F-005 (new): Flex's `transcribe()` restricts default auto-LID to
+  `RECOMMENDED_LANGS` (excludes `bgc`, `bhb`); Core's does not.** Found by
+  diffing `indic_transcribe.py` between the two now-vendored repos — this is
+  new information, not in either card, not in our prior dossiers. The
+  vendor's own inline comment discloses a quantified effect (pa 0.620→0.775
+  on VOI over 337k clips, excluding sink languages), which we have not
+  independently verified. Full writeup: [[F-005]]. Practical effect on this
+  project: none of our existing measurements change (all our auto-LID runs
+  used Core), but the "same wrapper" framing above needs this caveat, and any
+  future Flex-vs-Core LID comparison must control for it.
+- `TRAINED_LANGS` in `lid.py` is correctly 27 for Flex (vs Core's 25) —
+  consistent with the card and with `20-models/indic-transcribe-core.md`'s
+  correction of the earlier F-002 note (that note's "27" referred to the
+  mode-validation `LANGUAGES` tuple, which is shared and identical on both
+  models, not the LID-specific `TRAINED_LANGS`).
+
+Related: [[indic-transcribe-core]] · [[canary-1b-v2]] · [[F-001-hindi-belt-lid-absorption|F-001]] · [[F-004-flex-mixed-critical-values|F-004]] · [[F-005-flex-only-auto-lid-restriction|F-005]] · [[lid-reliability]]

@@ -2,7 +2,7 @@
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
 status: draft-reviewed
-version: 0.2
+version: 0.3
 updated: 2026-09-20
 model_snapshots:
   core: "bodhan-ai/indic-transcribe-core@4d29eeb7a099"
@@ -64,6 +64,8 @@ confidence interval. We release the suite, runners, and per-sample results.
   4. A quantified safety failure of built-in ITN for critical values (`F-004`).
   5. A retracted-and-fixed pipeline bug in the multi-speaker remedy check (`F-003`) —
      kept in the report as a worked example of catching a bad number before publication.
+  6. A code-audit finding, not present in either vendor card, that Core and
+     Flex diverge on default auto-LID candidate restriction (`F-005`).
 - **Not claimed:** model quality verdict, real-world noise robustness, code-mixing.
 
 ## 2. System under test
@@ -72,14 +74,24 @@ confidence interval. We release the suite, runners, and per-sample results.
 |---|---|---|
 | Params / base | 1.2B / canary-1b-v2 | 1.2B / canary-1b-v2 |
 | Languages | 25 | 27 |
-| Snapshot | `4d29eeb7a099` | TODO |
+| Snapshot | `e083ab7d...` (re-vendored 2026-09-20) | `c0db6b2b...` (vendored 2026-09-20, first time) |
 | Role | baseline (D-002) | modes/ITN (EXP-D) |
 
 Verified API surface and card-vs-code deltas: `20-models/indic-transcribe-core.md`,
-`20-models/indic-transcribe-flex.md`, `F-002`.
+`20-models/indic-transcribe-flex.md`, `F-002`, `F-005`.
 Key code facts: 45 s hard cap, no timestamps, token log-probs via generate passthrough,
 Core exposes `native/mixed/romanised` though its card says native-only.
-**TODO:** re-vendor after the 2026-09-15 HF update (`long_form.py`, `inference.py` now ship).
+**Re-vendored 2026-09-20** (was: TODO after the 2026-09-15 HF update). Both
+models now ship `long_form.py`/`inference.py` and a new NeMo checkpoint
+distribution (untested by us, needs GPU). All EXP-A–E measurements were taken
+against the pre-update snapshot (`4d29eeb7a099`) — the diff changed
+`max_new_tokens`'s default (256→512, no effect: all runners pass it
+explicitly) and nothing else that touches our runners; `transcribe()`'s
+`return_lid` contract (root cause of the F-003 bug) is unchanged in the
+current code. New finding from the diff: **F-005** — Flex's `transcribe()`
+restricts default auto-LID to `RECOMMENDED_LANGS`; Core's does not. Neither
+card documents this; none of our existing measurements are affected (all ran
+on Core), but it's new information about the two models' behavior.
 
 ## 3. Challenge suite
 
@@ -223,6 +235,7 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 | C4 | Top-K generation has headroom; likelihood reranker fails | EXP-C oracle 22.38 vs 24.87; bootstrap 95% CI on the gap [1.04, 4.20] pts, p≈0.0002 | medium-high | n=80, one reranker |
 | C5 | Vendor OI-WER does not transfer to this slice | EXP-A whitespace WER 22.0 / project OI-WER 19.9 vs vendor's reported OI-WER 8.7 (§5.7) | high (categorical; formatting tolerance closes only ~2 of ~13 points) | different corpus; still not the vendor's own OI-WER definition |
 | C6 | Interpretable features do not predict errors here | EXP-B AUC 0.515, bootstrap 95% CI [0.387, 0.646] (spans 0.5) | medium-high — CI confirms "no better than chance," not just a point estimate | n=80, provisional label |
+| C7 | Core and Flex are not symmetric on default auto-LID: Flex restricts candidates to `RECOMMENDED_LANGS`, Core does not | Direct code diff, `indic_transcribe.py`, both vendored 2026-09-20 (F-005) | high for the code fact; **untested** for empirical effect | code-audit only — no inference run; vendor's own 337k-clip number (pa 0.620→0.775) not independently verified |
 
 Bootstrap methodology and full numbers: `code/scripts/bootstrap_cis.py` → `code/results/stats/bootstrap.json` (10,000 resamples, seed 20260920, paired bootstrap for within-sample comparisons, Wilson score interval for the n=10 binomial).
 

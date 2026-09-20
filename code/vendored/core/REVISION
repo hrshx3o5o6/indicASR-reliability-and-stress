@@ -1,0 +1,5 @@
+repo: bodhan-ai/indic-transcribe-core
+sha: e083ab7dfeeddcb5c0b4a2d7df53f53e7b0f1537
+vendored: 2026-09-20
+note: text/code files only (README, python sources, configs, licenses, nemo/ helper scripts). Binary weights (model.safetensors, feature_extractor.safetensors, tokenizer_multilingual.model, nemo .nemo checkpoint) intentionally not re-vendored -- no claim in this project depends on their content.
+previous_revision: 4d29eeb7a099

@@ -1,0 +1,5 @@
+repo: bodhan-ai/indic-transcribe-flex
+sha: c0db6b2b05409fee7317f193fb207db332a0f14b
+vendored: 2026-09-20
+note: first vendoring of Flex -- text/code files only, same scope as core/REVISION.
+previous_revision: none (never vendored before this pass)

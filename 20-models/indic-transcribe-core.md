@@ -1,6 +1,6 @@
 ---
 type: model
-updated: 2026-09-17
+updated: 2026-09-20
 hf: "bodhan-ai/indic-transcribe-core"
 params: "1.2B"
 languages: 25
@@ -113,6 +113,45 @@ Both cards were updated 2026-09-15 (HF API `lastModified`), i.e. **after** our 0
 3. Flex `mixed` ITN trades critical-value integrity for formatting: currency 100%→0%, entity 49.6%→20.5% surface recall ([[F-004]]) — quantifies the card's "occasionally wrong".
 4. Vendor OI-WER (8.7) and our challenge-slice WER (22.0%) differ by design: different corpora, different metric; **we cannot claim the vendor number is wrong, only that it does not transfer to our slice**.
 
+## Re-vendor + card re-check 2026-09-20
+
+Re-vendored to current HF revision `e083ab7d...` (text/code files only; see
+`code/vendored/core/REVISION`). Full diff against our 09-10 snapshot
+`4d29eeb7a099`:
+
+- `max_new_tokens` default **256 → 512**. No effect on our results — every
+  runner (`run_baseline.py`, `run_exp_d.py`, `run_exp_e.py`) passes an
+  explicit value, never the default.
+- **`long_form.py`/`inference.py` now ship** (already flagged missing in the
+  09-17 recheck) — vendored now. New vendor-disclosed number in the
+  docstring: on a 154 s single-pass decode, 4-gram repetition rises
+  **40% → 91%** and WER **88% → 249%** as the token budget increases — the
+  vendor's own quantified failure mode for over-length single-pass decoding.
+  We have not verified this; noted because it is structurally the same shape
+  of failure as our own F-003 (short-turn decode) — both are decode-length
+  edge cases where the model produces fluent-looking garbage instead of an
+  error. Worth a line in the discussion section if EXP-F/long-form work
+  continues.
+- New **NeMo checkpoint distribution** (`nemo/` dir: `.nemo` weights +
+  `load_nemo.py`/`inference_nemo.py`/`long_form_nemo.py`/`test_nemo.py`).
+  Vendor claims 77x realtime, 9.2 GiB GPU memory for 1 hour of audio at
+  `batch_size=8` via `transcribe_long_nemo`. **Untested by us** — would need
+  GPU compute, out of scope this pass.
+- `transcribe()`'s `return_lid` contract is **unchanged**: still returns a
+  bare `str` unless `return_lid=True`. This confirms the root cause found in
+  F-003 (EXP-E's `[0]`-indexing bug) is not an artifact of our stale
+  snapshot — it reproduces against the current vendor code too.
+- **F-005 (new, 2026-09-20):** Core's `transcribe()` has no default
+  auto-LID candidate restriction; Flex's does (see [[F-005]]). Not previously
+  documented in either dossier.
+- `LANGUAGES` (mode-validation set, 27 langs incl. `hne`/`bgc`) is unchanged —
+  the card-vs-code contradiction noted below still holds. `TRAINED_LANGS` in
+  `lid.py` (used for actual LID) is a *different*, correctly-25-language list
+  for Core — our original F-002 note conflated these; `LANGUAGES` (mode
+  validation) accepting `lang="hne"`/`"bgc"` explicitly does not mean Core is
+  trained on them for LID purposes, just that the wrapper won't reject the
+  argument.
+
 ## Related
 
-[[indic-transcribe-flex]] (sibling, 27 langs, 3 output modes) · [[canary-1b-v2]] (base) · [[PIPELINE]] · [[oi-wer]]
+[[indic-transcribe-flex]] (sibling, 27 langs, 3 output modes) · [[canary-1b-v2]] (base) · [[PIPELINE]] · [[oi-wer]] · [[F-005-flex-only-auto-lid-restriction|F-005]]

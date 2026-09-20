@@ -27,7 +27,7 @@ updated: 2026-09-20
 | P-9 | Model weight download stalls (flaky DNS/LFS CDN) | Multi-hour downloads | `scripts/parallel_download.sh` resumable range fetch | mitigated |
 | P-10 | EXP-D is heavy (~3074 s / 80 rows × 3 modes) | Exceeds 60-min sandbox TTL | Chunk; or run inference in service | open |
 | P-11 | ~~EXP-D annotation-count discrepancy~~ | Publication blocker | **Closed 2026-09-20** — not a conflict, two different denominators; see `REPORT.md` §5.4 | closed |
-| P-12 | Vendor repos changed **2026-09-15**; vendored snapshot `4d29eeb7a099` predates them | Stale code-level claims | Re-vendor + pin both revisions | open |
+| P-12 | ~~Vendor repos changed 2026-09-15; vendored snapshot predated them~~ | Stale code-level claims | **Closed 2026-09-20** — re-vendored Core (`e083ab7d...`) and Flex (`c0db6b2b...`, first time) text/code files; diff summarized in `20-models/*`; found new F-005 in the process | closed |
 | P-13 | ~~Whitespace WER, not OI-WER~~ | Limits fairness/semantic claims | **Partially closed 2026-09-20** — `code/metrics/oi_wer.py` (D-006), EXP-A re-scored (`REPORT.md` §5.7). Human-verify 19 rows still open | open (semantic verification remains) |
 | P-14 | Dependencies unpinned; artifacts live on SSD not git; no single repro entry point | Not independently reproducible | `docs/REPRODUCE.md` §12; bootstrap/OI-WER artifacts now committed under `code/results/` | open |
 | P-15 | 2 MB freebuff transcript; context continuity across sessions | Reorientation cost | Digest into `docs/PRIOR-CONTEXT.md`; Ralph state file | open |
