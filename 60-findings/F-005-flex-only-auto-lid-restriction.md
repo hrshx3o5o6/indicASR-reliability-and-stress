@@ -84,13 +84,14 @@ aggregate: `code/results/summaries/exp-a-v1-flex-summary.json`; CIs:
 `exp_a_flex_bho_lid`).
 
 **Status.** Verified, empirically tested — both the code-level asymmetry and
-its real effect on this suite. Open question, not yet investigated: *why*
-does Flex do meaningfully better on Bhojpuri specifically, when the code
-difference we found (RECOMMENDED_LANGS restriction) doesn't touch `bho` at
-all? Candidate explanations we have not tested: Flex's 27-language training
-set (vs Core's 25) may shift the softmax distribution even for candidates
-both models share; or Flex is simply a better-trained checkpoint on this
-axis independent of the restriction. Left open for a future pass.
+its real effect on this suite. **Partially diagnosed 2026-09-20:** [[F-007]]
+shows the gap is a confidence/calibration difference, not the restriction —
+Core commits confidently (up to 99.6% probability) to the wrong belt language
+on bho clips, while Flex genuinely contests bho against mai/hi with real
+probability mass and wins 4/10 of those contests. *Why* Flex's softmax is
+less sharp specifically on bho remains open (candidate causes: different bho
+training data volume/quality between the two checkpoints; a general effect of
+Flex's 27-language output layer vs Core's 25 — untested).
 
 **Card relation.** Neither the Core nor the Flex model card documents this
 asymmetry; both describe `allowed_langs`/auto-detection identically. This is

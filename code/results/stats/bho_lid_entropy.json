@@ -1,0 +1,57 @@
+{
+  "seed": 20260920,
+  "n_boot": 10000,
+  "by_language": {
+    "bho": {
+      "n": 10,
+      "core_mean_entropy": 0.3217634092223878,
+      "flex_mean_entropy": 0.5172090751360424
+    },
+    "hi": {
+      "n": 10,
+      "core_mean_entropy": 0.0011154800006705414,
+      "flex_mean_entropy": 0.014339234387158114
+    },
+    "kn": {
+      "n": 10,
+      "core_mean_entropy": 3.045716950525274e-08,
+      "flex_mean_entropy": 3.159531248459747e-07
+    },
+    "mai": {
+      "n": 10,
+      "core_mean_entropy": 1.2406291772128358e-07,
+      "flex_mean_entropy": 8.435336386869736e-06
+    },
+    "ml": {
+      "n": 10,
+      "core_mean_entropy": 6.390213035056696e-08,
+      "flex_mean_entropy": 1.2247759015642957e-06
+    },
+    "ta": {
+      "n": 10,
+      "core_mean_entropy": 2.515655902444462e-08,
+      "flex_mean_entropy": 9.761854934446145e-08
+    },
+    "te": {
+      "n": 10,
+      "core_mean_entropy": 3.690190685281174e-08,
+      "flex_mean_entropy": 3.942874248718796e-07
+    },
+    "ur": {
+      "n": 10,
+      "core_mean_entropy": 0.008877428784826781,
+      "flex_mean_entropy": 0.0030937615179237967
+    }
+  },
+  "bho_paired_entropy_diff_flex_minus_core": {
+    "n": 10,
+    "mean_core": 0.3217634092223877,
+    "mean_flex": 0.5172090751360424,
+    "mean_diff": 0.19544566591365461,
+    "diff_ci95": [
+      -0.08338873889989869,
+      0.46649179293709736
+    ],
+    "excludes_zero": false
+  }
+}

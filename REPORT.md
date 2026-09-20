@@ -2,7 +2,7 @@
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
 status: draft-reviewed
-version: 0.6
+version: 0.7
 updated: 2026-09-20
 model_snapshots:
   core: "bodhan-ai/indic-transcribe-core@e083ab7d"
@@ -254,12 +254,24 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
   Flex's `transcribe()` restricts default auto-LID candidates to
   `RECOMMENDED_LANGS` (excludes bgc/bhb only — not bho), Core's does not. That
   restriction does **not** explain the Bhojpuri gap (bho isn't excluded on
-  either model) — the cause is open; candidate explanations (Flex's 27-lang
-  training set shifting the softmax; a genuinely better-trained checkpoint on
-  this axis) are untested.
+  either model).
+- **Diagnosed (F-007, compute:none, reuses committed data):** LID entropy
+  analysis of both models' own `topk` distributions shows bho is the *only*
+  language either model shows real predictive uncertainty on (Core mean
+  entropy 0.322, Flex 0.517 nats; every other language ≈0 for both). Core's
+  errors are **confident, wrong commitments** (up to 99.6% probability on the
+  wrong belt language); Flex genuinely contests bho against mai/hi with real
+  probability mass and wins 40% of those contests. The Flex-vs-Core entropy
+  gap itself is directional only (paired diff +0.195 nats, 95% CI
+  [−0.083, 0.466], n=10, not significant) — the qualitative pattern (Core is
+  overconfident-wrong, not uncertain) is the robust part. This also explains
+  part of C6/EXP-B's negative result: a confidence-threshold reliability
+  feature cannot catch an error mode whose signature is *high* confidence.
 - Artifacts: `code/results/summaries/exp-a-v1-flex-{baseline,summary}.json`,
   CIs in `code/results/stats/bootstrap.json` (`exp_a_core_vs_flex`,
-  `exp_a_flex_bho_lid`).
+  `exp_a_flex_bho_lid`), entropy analysis:
+  `code/results/stats/bho_lid_entropy.json`
+  (`code/scripts/analyze_bho_lid_entropy.py`).
 
 ## 6. Results synthesis
 
@@ -293,6 +305,7 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 | C6 | Interpretable features do not predict errors here | EXP-B AUC 0.515, bootstrap 95% CI [0.387, 0.646] (spans 0.5) | medium-high — CI confirms "no better than chance," not just a point estimate | n=80, provisional label |
 | C7 | Core and Flex are not symmetric on Bhojpuri auto-LID: Flex recovers 4/10 where Core gets 0/10, via a different confusion pattern (absorbed by Maithili, not Hindi); overall WER is tied between the two models | §5.8: paired bootstrap on 80 matched samples, WER diff CI [-1.5,+1.2]pts (p=0.83, tied); bho Wilson CI [16.8%,68.7%] vs Core's [0%,27.8%]. Code-level asymmetry (Flex-only `RECOMMENDED_LANGS` default restriction, F-005) found first but does **not** explain the Bhojpuri effect (bho not in the excluded set) | high — real inference run, both models, matched samples | cause of the Bhojpuri gap is unexplained; vendor's own 337k-clip number for the *documented* restriction (pa 0.620→0.775, unrelated to bho) not independently verified |
 | C8 | This project's own synthetic noise transform understates real-world noise degradation by ~10x — every EXP-A/D/E "noise" result characterizes mild deterministic degradation only | §5.6/F-006: real noise−clean +20.6pts CI[4.9,36.4] p=0.009 (excludes zero) vs synthetic noise−clean +2.0pts CI[-5.4,+9.7] p=0.605 (includes zero), n=28/28 real, n=24/32 synthetic, 7 matched languages | high — statistically significant real effect vs. statistically null synthetic effect | n=56 pilot, n=4/language/condition for per-language deltas; `scenario` is a proxy for real conditions, not controlled SNR; bho untested (no IndicVoices source) |
+| C9 | Core's Bhojpuri LID errors are confident, wrong commitments, not hedged uncertainty; Flex genuinely contests bho and wins 40% of the time — bho is the only language either model shows real predictive entropy on | §5.8/F-007: Core bho mean entropy 0.322 nats, Flex 0.517 (both ≈0 for every other language); paired diff CI [-0.083,0.466] (n=10, directional only) | high for the qualitative pattern (deterministic from committed topk data); low for the specific entropy-gap magnitude | n=10; *why* Flex is less sharp on bho specifically remains unexplained |
 
 Bootstrap methodology and full numbers: `code/scripts/bootstrap_cis.py` → `code/results/stats/bootstrap.json` (10,000 resamples, seed 20260920, paired bootstrap for within-sample comparisons, Wilson score interval for the n=10 binomial).
 
@@ -363,5 +376,5 @@ production-safety statement; DER quality of neural diarization.
 | §5.6 (EXP-F) | `EXP-F-real-noise.md`, `F-006` | **run 2026-09-20** — falsifiable target met |
 | §5.7 (OI-WER) | `code/results/summaries/exp-a-v1-oiwer-summary.json` | filled 2026-09-20 |
 | §5.8 (second baseline) | `code/results/summaries/exp-a-v1-flex-*.json`, bootstrap.json | filled 2026-09-20, unblocked P-task from Ralph loop |
-| §7 C1–C8 | findings `F-001..006` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
+| §7 C1–C9 | findings `F-001..007` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
 | Lockfile / full repro bundle | — | still TODO (§9) |
