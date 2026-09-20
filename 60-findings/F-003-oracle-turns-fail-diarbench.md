@@ -2,22 +2,22 @@
 type: finding
 id: F-003
 title: "Oracle-turn transcription fails on DiarBench — the vendor's diarize-then-transcribe remedy is insufficient as stated"
-status: verified
-confidence: "high for this 4-recording slice; small-n, 2 languages"
+status: retracted-pending-rerun
+confidence: "invalid — WER figures were a pipeline bug, not a model result"
 metric: wer
-updated: 2026-09-17
+updated: 2026-09-20
 ---
 
 # F-003 — Oracle turns do not rescue Core on conversational audio
 
-**Claim.** [[indic-transcribe-core]] produces near-empty transcripts on real two-speaker conversational turns **even when given oracle speaker-turn boundaries**. The vendor's Limitations remedy — *"pair it with a diarization module and transcribe each speaker turn separately"* — is necessary but not sufficient on this slice.
+**Claim (as originally stated, now retracted).** [[indic-transcribe-core]] produces near-empty transcripts on real two-speaker conversational turns **even when given oracle speaker-turn boundaries**, implying the vendor's diarize-then-transcribe remedy is insufficient.
 
-**Evidence.** [[EXP-E]] pilot, `data/challenge/results/exp-e/exp-e-pilot-summary.json` (SSD): 4 Indic DiarBench recordings (2 hi, 2 ta; near/far field; ~60 s each; 2 speakers each). No-diarization WER 99.91% · oracle-turn WER 99.80% · automatic VAD/KMeans WER 100.00% · automatic DER 62.51%. Post-run audit: Core emits 1–2 characters on many annotated turns, including sub-second oracle cuts; a direct annotated-turn decode reproduced the failure. Runner: `code/run_exp_e.py`.
+**⚠️ 2026-09-20 audit — the evidence was a code bug, not a model finding.** `IndicTranscribe.transcribe()` returns a bare `str` unless called with `return_lid=True` (`code/vendored/core/indic_transcribe.py:141-201`). `code/run_exp_e.py`'s `transcribe_clip()` called `asr.transcribe(...)[0]` without `return_lid=True` — every EXP-A/EXP-D call site correctly unpacks `text, lid = asr.transcribe(..., return_lid=True)`, but EXP-E's `[0]` indexed the **first character of the returned string**, not a tuple element. Verified directly against the per-sample records (`exp-e-pilot-results.jsonl`, SSD): `no_diarization_transcript` for a 60 s, two-chunk clip was literally `"य उ"` (2 characters for 2 chunks); `oracle_turn_transcript` token counts matched `num_reference_segments` exactly in all 4 recordings (23/23, 12/12, 30/30, 27/27) — i.e. **exactly one character was ever kept per ASR call**, independent of clip length (some oracle segments were 5-27 s long). That pattern is a string-indexing bug, not a "model degrades on short turns" signal — a genuine degradation would still emit partial words. Bug fixed 2026-09-20 (dropped the `[0]`); see the note in `run_exp_e.py`.
 
-**Provenance.** `exp-e` (measured 2026-09-17, Core snapshot `4d29eeb7a099`).
+**What survives.** `automatic_der` (62.51% mean) does not depend on transcript text — it compares predicted vs. reference speaker-time segments — so the *diarization-quality* number is unaffected by this bug and remains a directionally valid (if toy-baseline) result. All **WER-based** numbers (no-diarization 99.91%, oracle-turn 99.80%, automatic 100.00%) are void.
 
-**Interpretation.** The failure is not diarization quality — oracle turns fail too — it is turn-context/short-segment behavior: Core trains on ≤30 s single-speaker clips and degrades on very short conversational cuts. Next iteration: turn padding/context plus a neural diarizer ([[EXPERIMENT-OBSERVATIONS]] next actions). The card's 45 s limit and `long_form.py` pause-splitting chunker (documented since 09-15) target *long* audio, not short turns — they do not touch this failure.
+**Provenance.** `exp-e` (measured 2026-09-17, Core snapshot `4d29eeb7a099`); bug found and code fixed 2026-09-20; **not yet re-run** (requires the ASR service, currently offline — `asr_url` unset).
 
-**Status.** `verified` for this slice (oracle comparison measured end-to-end). Scope limits: 4 recordings, 2 languages, DER from a simple energy-VAD/KMeans baseline. **If turn padding rescues short turns:** the claim narrows to "raw oracle cuts are insufficient" — expected EXP-E iteration 2. **If padding fully rescues:** record that the vendor remedy works with minimal engineering.
+**Status.** `retracted-pending-rerun`. The real oracle-turn WER on this slice is **unknown** until `code/run_exp_e.py` is re-run against a live model. Do not cite the 99.8%/99.91%/100% WER figures anywhere. The DER figure (62.51%, toy VAD/KMeans baseline) may still be cited as a rough diarization-quality signal.
 
-**Card relation.** Directly qualifies a Limitations claim on the current [[indic-transcribe-core]] card. This is a *measured qualification*, not a contradiction — the card never claims turn-by-turn transcription works, it only prescribes it.
+**Card relation.** No claim can currently be made about whether the vendor's diarize-then-transcribe remedy is sufficient or not on this slice — re-open once EXP-E is re-run.

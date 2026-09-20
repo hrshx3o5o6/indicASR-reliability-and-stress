@@ -3,9 +3,9 @@ type: finding
 id: F-004
 title: "Flex mixed-mode ITN degrades critical-value surfaces — vendor's 'occasionally wrong' is measurable and material"
 status: verified
-confidence: "medium-high — conservative exact-surface diagnostics on 80 rows"
+confidence: "medium-high for entity (n=39 rows); low for currency (n=3 rows) — see 2026-09-20 reconciliation"
 metric: critical-value-accuracy
-updated: 2026-09-17
+updated: 2026-09-20
 ---
 
 # F-004 — Flex mixed mode fails critical-value surfaces
@@ -13,6 +13,8 @@ updated: 2026-09-17
 **Claim.** On our 80-sample suite, [[indic-transcribe-flex]] `mixed` (ITN) mode raises WER 22.01% → 33.54% and collapses **currency surface recall 100% → 0%** and **entity surface recall 49.6% → 20.5%** versus Core native. The card's *"mixed-script mode will occasionally get it wrong"* materially understates the failure mode on critical-value content in our slice.
 
 **Evidence.** [[EXP-D]] final v1: `data/challenge/results/exp-d/exp-d-semantic-curated-summary.json` (SSD). Per-mode (Core native / Flex native / Flex mixed): number surface recall 59.1 / 59.1 / 77.3% · currency 100 / 100 / 0% · entity 49.6 / 60.3 / 20.5%. Mixed improved 9/80 rows, worsened 56/80, emitted digit-like tokens on 15/80 and Latin-script tokens on 62/80.
+
+**⚠️ Denominator reconciliation (2026-09-20).** `annotated_rows_scored: 50` counts rows carrying *any* annotated slot (number, date, currency, or entity) out of 80 propagated rows; it is not one flat 80-row denominator per metric. Verified per-row from the summary's row list: **11 rows carry a number slot, 3 a date slot, 3 a currency slot, 39 an entity slot** (rows may carry more than one). The currency 100%→0% collapse — the most dramatic number in this finding — rests on **n=3**. It is real (all three flipped) but too thin to generalize beyond "at least one clear currency-formatting failure mode exists." The entity 49.6%→20.5% figure (n=39) is the better-powered claim here.
 
 **Provenance.** `exp-d` (agent-reviewed conservative annotations, 2026-09-16/17). Exact-surface diagnostics — the scorer accepts the exact spoken phrase or digit value only, no transliteration or compositional variants. Not publication-grade semantic accuracy.
 

@@ -133,7 +133,12 @@ def der(reference: list[dict], predicted: list[dict], duration: float) -> float:
 def transcribe_clip(asr, audio: np.ndarray, sample_rate: int, start: float, end: float, root: Path, name: str, language: str) -> str:
     path = root / f"{name}.wav"
     write_wav(path, audio[int(start * sample_rate) : int(end * sample_rate)], sample_rate)
-    return asr.transcribe(str(path), lang=language, mode="native", max_new_tokens=128)[0]
+    # NOTE (2026-09-20 audit): transcribe() returns a bare `str` unless
+    # return_lid=True (see indic_transcribe.py:141-201). The old `[0]` here
+    # indexed the first CHARACTER of that string, not the first element of a
+    # (text, lid) tuple -- every EXP-E transcript was silently truncated to
+    # ~1 char per clip. Fixed; results predating this fix are invalid (F-003).
+    return asr.transcribe(str(path), lang=language, mode="native", max_new_tokens=128)
 
 
 def main() -> int:

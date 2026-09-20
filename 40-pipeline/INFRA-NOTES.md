@@ -2,7 +2,7 @@
 type: pipeline
 title: "Infrastructure notes — problems encountered and the Ralph loop"
 status: active
-updated: 2026-09-19
+updated: 2026-09-20
 ---
 
 # INFRA-NOTES — environment, blockers, and the sandboxed research loop
@@ -26,12 +26,14 @@ updated: 2026-09-19
 | P-8 | Mock provider cannot execute real commands | Local plumbing works, real runs don't | Use E2B managed for real passes | known |
 | P-9 | Model weight download stalls (flaky DNS/LFS CDN) | Multi-hour downloads | `scripts/parallel_download.sh` resumable range fetch | mitigated |
 | P-10 | EXP-D is heavy (~3074 s / 80 rows × 3 modes) | Exceeds 60-min sandbox TTL | Chunk; or run inference in service | open |
-| P-11 | **EXP-D annotation-count discrepancy** (`annotated_rows_scored: 50` vs "11 number rows") | Publication blocker | Reconcile before publication — `REPORT.md` §5.4 | open |
+| P-11 | ~~EXP-D annotation-count discrepancy~~ | Publication blocker | **Closed 2026-09-20** — not a conflict, two different denominators; see `REPORT.md` §5.4 | closed |
 | P-12 | Vendor repos changed **2026-09-15**; vendored snapshot `4d29eeb7a099` predates them | Stale code-level claims | Re-vendor + pin both revisions | open |
-| P-13 | Whitespace WER, not OI-WER; semantic metrics are exact-surface only | Limits fairness/semantic claims | Implement OI-WER; human-verify 19 rows | open |
-| P-14 | Dependencies unpinned; artifacts live on SSD not git; no single repro entry point | Not independently reproducible | `docs/REPRODUCE.md` §12 | open |
+| P-13 | ~~Whitespace WER, not OI-WER~~ | Limits fairness/semantic claims | **Partially closed 2026-09-20** — `code/metrics/oi_wer.py` (D-006), EXP-A re-scored (`REPORT.md` §5.7). Human-verify 19 rows still open | open (semantic verification remains) |
+| P-14 | Dependencies unpinned; artifacts live on SSD not git; no single repro entry point | Not independently reproducible | `docs/REPRODUCE.md` §12; bootstrap/OI-WER artifacts now committed under `code/results/` | open |
 | P-15 | 2 MB freebuff transcript; context continuity across sessions | Reorientation cost | Digest into `docs/PRIOR-CONTEXT.md`; Ralph state file | open |
 | P-16 | E2B free tier ignores custom vCPU/RAM; no GPU | Cannot scale in-sandbox | Paid tier or GPU provider when needed | known |
+| P-17 | Ralph loop ran 10 passes (2026-09-20), **zero completed** — every `compute:none` pass crashed on an opencode agent error (`content[].thinking must be passed back to the API`) before doing work; `set -e` in `scripts/ralph_pass.sh` then aborted before recording the failure, leaving tasks stuck `in_progress`/`"started"` instead of `failed` | Loop looked idle-but-fine when it had silently done nothing for 10 commits | Tier 0–2 claim-strengthening done manually instead (this pass); `ralph_pass.sh`'s `set -e` + failing-receipt-in-`$(...)` interaction still needs a real fix before re-enabling the loop | open |
+| P-18 | **EXP-E `[0]`-string-indexing bug** — `run_exp_e.py` took `asr.transcribe(...)[0]` without `return_lid=True`, so `transcribe()`'s bare-string return got indexed by character; every EXP-E transcript was truncated to ~1 char, producing a false near-total-failure WER that had been published as a verified finding (F-003) | A wrong, confidently-stated finding nearly reached the report as fact | **Fixed 2026-09-20** in `run_exp_e.py`; F-003 and `EXP-E-diarization.md` retracted pending rerun | fixed, rerun pending live ASR service |
 
 ## B. The sandboxed Ralph loop (design)
 

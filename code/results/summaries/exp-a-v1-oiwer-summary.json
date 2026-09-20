@@ -1,0 +1,739 @@
+{
+  "sample_count": 80,
+  "metric": "project_oi_wer (normalization-tolerant, multi-reference; NOT the vendor's OI-WER definition)",
+  "mean_oi_wer": 0.19900487383758753,
+  "mean_oi_wer_by_language": {
+    "bho": 0.1408313120280666,
+    "hi": 0.1096732026143791,
+    "kn": 0.2061813186813187,
+    "mai": 0.23430773169482846,
+    "ml": 0.31863445378151256,
+    "ta": 0.1633134413185564,
+    "te": 0.14798245614035085,
+    "ur": 0.27111507444168736
+  },
+  "rows_with_variant_used": 57,
+  "note": "Computed by code/metrics/oi_wer.py against cached EXP-A explicit-language transcripts. Multi-reference scoring only helps where reference_variants differ meaningfully after normalization; most current variants are punctuated restatements of the primary reference (see REPORT.md Sec 5.7).",
+  "rows": [
+    {
+      "sample_id": "regional-bho-001",
+      "language": "bho",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.07692307692307693,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-002",
+      "language": "bho",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.21212121212121213,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-003",
+      "language": "bho",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.10344827586206896,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-004",
+      "language": "bho",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.058823529411764705,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-001-background_noise",
+      "language": "bho",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.15384615384615385,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-002-background_noise",
+      "language": "bho",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.2727272727272727,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-003-background_noise",
+      "language": "bho",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.13793103448275862,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-001-telephone",
+      "language": "bho",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.07692307692307693,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-002-telephone",
+      "language": "bho",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.21212121212121213,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-bho-003-telephone",
+      "language": "bho",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.10344827586206896,
+      "used_variant": false
+    },
+    {
+      "sample_id": "fleurs-hi-1602",
+      "language": "hi",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.13333333333333333,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1601",
+      "language": "hi",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.07407407407407407,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1608",
+      "language": "hi",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.14705882352941177,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1607",
+      "language": "hi",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.0,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1602-background_noise",
+      "language": "hi",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.16666666666666666,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1601-background_noise",
+      "language": "hi",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.07407407407407407,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1608-background_noise",
+      "language": "hi",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.14705882352941177,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1602-telephone",
+      "language": "hi",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.13333333333333333,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1601-telephone",
+      "language": "hi",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.07407407407407407,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-hi-1608-telephone",
+      "language": "hi",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.14705882352941177,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1620",
+      "language": "kn",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.23076923076923078,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1516",
+      "language": "kn",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.1875,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1625",
+      "language": "kn",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.3076923076923077,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1574",
+      "language": "kn",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.07142857142857142,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1620-background_noise",
+      "language": "kn",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.23076923076923078,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1516-background_noise",
+      "language": "kn",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.0625,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1625-background_noise",
+      "language": "kn",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.3076923076923077,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1620-telephone",
+      "language": "kn",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.23076923076923078,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1516-telephone",
+      "language": "kn",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.125,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-kn-1625-telephone",
+      "language": "kn",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.3076923076923077,
+      "used_variant": true
+    },
+    {
+      "sample_id": "regional-mai-001",
+      "language": "mai",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.24,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-002",
+      "language": "mai",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.2857142857142857,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-003",
+      "language": "mai",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.16129032258064516,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-004",
+      "language": "mai",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.19444444444444445,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-001-background_noise",
+      "language": "mai",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.28,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-002-background_noise",
+      "language": "mai",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.3333333333333333,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-003-background_noise",
+      "language": "mai",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.16129032258064516,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-001-telephone",
+      "language": "mai",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.24,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-002-telephone",
+      "language": "mai",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.2857142857142857,
+      "used_variant": false
+    },
+    {
+      "sample_id": "regional-mai-003-telephone",
+      "language": "mai",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.16129032258064516,
+      "used_variant": false
+    },
+    {
+      "sample_id": "fleurs-ml-1538",
+      "language": "ml",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.17647058823529413,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1549",
+      "language": "ml",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.5714285714285714,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1524",
+      "language": "ml",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.15,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1622",
+      "language": "ml",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.375,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1538-background_noise",
+      "language": "ml",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.23529411764705882,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1549-background_noise",
+      "language": "ml",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.5714285714285714,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1524-background_noise",
+      "language": "ml",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.15,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1538-telephone",
+      "language": "ml",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.23529411764705882,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1549-telephone",
+      "language": "ml",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.5714285714285714,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ml-1524-telephone",
+      "language": "ml",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.15,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1623",
+      "language": "ta",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.13043478260869565,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1644",
+      "language": "ta",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.3888888888888889,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1544",
+      "language": "ta",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.058823529411764705,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1635",
+      "language": "ta",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.17647058823529413,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1623-background_noise",
+      "language": "ta",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.13043478260869565,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1644-background_noise",
+      "language": "ta",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.2222222222222222,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1544-background_noise",
+      "language": "ta",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.058823529411764705,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1623-telephone",
+      "language": "ta",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.13043478260869565,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1644-telephone",
+      "language": "ta",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.2777777777777778,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ta-1544-telephone",
+      "language": "ta",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.058823529411764705,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1519",
+      "language": "te",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.05263157894736842,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1577",
+      "language": "te",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.0,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1538",
+      "language": "te",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.35,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1652",
+      "language": "te",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.16666666666666666,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1519-background_noise",
+      "language": "te",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.15789473684210525,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1577-background_noise",
+      "language": "te",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.0,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1538-background_noise",
+      "language": "te",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.35,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1519-telephone",
+      "language": "te",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.05263157894736842,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1577-telephone",
+      "language": "te",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.0,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-te-1538-telephone",
+      "language": "te",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.35,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1537",
+      "language": "ur",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.08333333333333333,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1643",
+      "language": "ur",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.40625,
+      "used_variant": false
+    },
+    {
+      "sample_id": "fleurs-ur-1538",
+      "language": "ur",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.3548387096774194,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1539",
+      "language": "ur",
+      "condition": [
+        "clean"
+      ],
+      "oi_wer": 0.11538461538461539,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1537-background_noise",
+      "language": "ur",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.08333333333333333,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1643-background_noise",
+      "language": "ur",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.46875,
+      "used_variant": false
+    },
+    {
+      "sample_id": "fleurs-ur-1538-background_noise",
+      "language": "ur",
+      "condition": [
+        "background_noise"
+      ],
+      "oi_wer": 0.3548387096774194,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1537-telephone",
+      "language": "ur",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.08333333333333333,
+      "used_variant": true
+    },
+    {
+      "sample_id": "fleurs-ur-1643-telephone",
+      "language": "ur",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.40625,
+      "used_variant": false
+    },
+    {
+      "sample_id": "fleurs-ur-1538-telephone",
+      "language": "ur",
+      "condition": [
+        "telephone"
+      ],
+      "oi_wer": 0.3548387096774194,
+      "used_variant": true
+    }
+  ]
+}

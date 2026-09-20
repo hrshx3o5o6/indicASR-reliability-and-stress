@@ -2,10 +2,10 @@
 type: experiment
 id: EXP-E
 title: "Diarization + multi-speaker pipeline"
-status: done
+status: retracted-pending-rerun
 phase: pilot-results
 depends: ["EXP-D"]
-updated: 2026-09-17
+updated: 2026-09-20
 ---
 
 # EXP-E — Diarization
@@ -44,6 +44,23 @@ audio → VAD → diarization → speaker turns → Core per turn → reliabilit
 | Automatic VAD/cluster WER | 100.00% |
 | Automatic DER | 62.51% |
 
-**Validity finding.** The selected conversations contain many short turns; exact oracle cuts can be sub-second. Core often emitted only partial characters on these turns, so segmentation alone did not recover usable ASR in this pilot. This is a valid stress result, not evidence that a production neural diarizer has 62.5% DER. The automatic baseline is intentionally simple and must be replaced by a neural diarizer for the next study.
+**⚠️ RETRACTED 2026-09-20.** The WER numbers in the table above are void — they
+were produced by a bug in `code/run_exp_e.py`'s `transcribe_clip()`, which
+called `asr.transcribe(...)[0]` without `return_lid=True`. Since `transcribe()`
+returns a bare `str` in that case, `[0]` indexed the **first character** of
+the string, not a tuple element (every other call site in this project, e.g.
+EXP-A/EXP-D, correctly passes `return_lid=True` and unpacks `(text, lid)`).
+Verified directly: a 60 s two-chunk clip's `no_diarization_transcript` was
+literally `"य उ"`, and oracle-turn transcript token counts matched
+`num_reference_segments` exactly in all 4 recordings regardless of segment
+duration (some segments were 5–27 s, not sub-second). That is a string-indexing
+artifact, not a "model degrades on short turns" signal. Bug fixed in code;
+**Automatic DER (62.51%) is unaffected** (it compares segment timing, not
+transcript text) and remains a directionally valid toy-baseline signal. The
+"Validity finding" originally written here (short-turn degradation) is
+retracted along with the WER numbers — see `F-003` for the full writeup.
 
-**Verdict.** EXP-E pilot fails the usable-accuracy criterion. Keep Core out of direct multi-speaker full-conversation mode; add turn padding/context and a real diarizer before expanding the benchmark.
+**Verdict.** EXP-E pilot **result unknown** pending a rerun with the fixed
+code against a live ASR service. DER alone still argues for turn
+padding/context and a real neural diarizer before expanding the benchmark,
+but the multi-speaker-remedy claim itself is open again.
