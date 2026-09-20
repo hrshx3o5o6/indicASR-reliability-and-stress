@@ -62,9 +62,9 @@
       "action": "Implement orthographically-informed WER (multi-reference + documented spelling/transliteration variants) in code/metrics/oi_wer.py with tests in code/tests/test_oi_wer.py. Re-score the cached EXP-A v1 baseline and EXP-C outputs; write summaries next to the originals with an 'oi_' prefix. Do not overwrite existing artifacts.",
       "receipt": "cd code && python3 -m pytest tests/test_oi_wer.py -q && test -f results/summaries/exp-a-v1-oiwer-summary.json",
       "done_criterion": "OI-WER tests pass and an OI-WER summary exists for EXP-A.",
-      "status": "pending",
+      "status": "in_progress",
       "attempts": 0,
-      "last_receipt": null
+      "last_receipt": "started"
     },
     {
       "id": "bootstrap-cis",
