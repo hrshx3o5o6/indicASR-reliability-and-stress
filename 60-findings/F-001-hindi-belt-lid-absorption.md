@@ -2,10 +2,10 @@
 type: finding
 id: F-001
 title: "Hindi-belt languages are absorbed by Hindi in LID (vendor-reported)"
-status: vendor-reported
-confidence: "high for Flex — the vendor's own limitation section"
+status: verified
+confidence: "high — vendor claim + EXP-A measurement agree; small-n caveat"
 metric: lid-reliability
-updated: 2026-09-10
+updated: 2026-09-17
 ---
 
 # F-001 — Hindi-belt LID absorption
@@ -22,7 +22,7 @@ updated: 2026-09-10
 
 They demand different fixes ([[EXP-C]] addresses #1 via top-K routing; #2 may need decoder-level work). The hi=0.26 number suggests even true-Hindi audio is being split among belt siblings by the LID head — i.e., the confusion is symmetric-ish, not one-directional. ⚠️ All numbers are Flex's; Core may differ.
 
-**Status.** `vendor-reported` → Exp A re-measures on Core + Flex: top-1/2/3 acc, confusion matrix, absorption rate on clean synthetic Hindi-belt audio ([[indic-tts-corpora]] probe) to separate acoustic vs decoder causes.
+**Status.** `verified` 2026-09-17. [[EXP-A]] v1 (80 samples, 8 langs × 10): Bhojpuri auto-LID wrong **10/10** while the other seven languages (incl. hi, mai, ur) were 10/10 correct — one-directional bho→(hi-belt) absorption in this slice, stronger than the symmetric-ish split F-002's vendor table suggested. Core-warning (`WEAK_LID_LANGS`) fired on 50% of samples. Scope caveat: 10 bho rows, clean/synthetic conditions, whitespace-token WER — the EXP-C oracle result (bho truth in top-3 10/10, reranker still picks hi) shows candidate generation survives even where top-1 fails.
 
 **Update 2026-09-10 (code audit):** vendor's own 337k-clip measurements ([[F-002-vendor-lid-internals|F-002]]) refine the picture — the confusion is a **multi-way sink system** (`hne` is the biggest absorber, not Hindi), and hi/ur is declared genuinely inseparable. F-001 remains the card-level claim; F-002 is the mechanism-level account.
 

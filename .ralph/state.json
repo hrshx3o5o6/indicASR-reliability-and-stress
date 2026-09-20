@@ -1,0 +1,22 @@
+{
+  "loop": "bodhanai-ralph",
+  "version": "1",
+  "step": "IDLE",
+  "iteration": 1,
+  "max_passes": 12,
+  "consecutive_failures": 0,
+  "current_task": null,
+  "last_task": "prior-context",
+  "last_receipt": {
+    "task": "prior-context",
+    "receipt_exit": 0,
+    "status": "done"
+  },
+  "sandbox": {
+    "provider": "reqly-e2b",
+    "api_url": "http://localhost:3100",
+    "asr_url": null,
+    "template": "python"
+  },
+  "updated": "2026-09-19"
+}

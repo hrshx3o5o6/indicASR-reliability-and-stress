@@ -1,6 +1,6 @@
 ---
 type: model
-updated: 2026-09-10
+updated: 2026-09-17
 hf: "bodhan-ai/indic-transcribe-core"
 params: "1.2B"
 languages: 25
@@ -17,16 +17,16 @@ Source: [HF model card](https://huggingface.co/bodhan-ai/indic-transcribe-core) 
 
 ## Verified facts
 
-| | |
-| --- | --- |
-| Architecture | FastConformer encoder (32L, 811M) + Transformer decoder (24L, 419M) |
-| Vocab | 7,152 tokens (1,152 special/task + 6,000 multilingual), BPE, byte fallback **disabled** |
-| Checkpoint | 4.6 GB, fp32 on disk / bf16 at inference |
-| Audio in | 16 kHz mono (auto-resampled), wav/flac/mp3, **single speaker** |
-| Output | Native script only — no ITN, no romanization, spoken numbers stay words |
-| Code-mixing | Native handling (Hinglish etc. as spoken) |
-| LID | Built in, one extra decoder step (not a second encoder pass) |
-| License | Indic Open Model License v1.0 — free research/commercial self-host; hosted-API use needs written consent (nonprofit/acad exempt); ⚠️ fine-tunes must carry same license |
+|              |                                                                                                                                                                         |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Architecture | FastConformer encoder (32L, 811M) + Transformer decoder (24L, 419M)                                                                                                     |
+| Vocab        | 7,152 tokens (1,152 special/task + 6,000 multilingual), BPE, byte fallback **disabled**                                                                                 |
+| Checkpoint   | 4.6 GB, fp32 on disk / bf16 at inference                                                                                                                                |
+| Audio in     | 16 kHz mono (auto-resampled), wav/flac/mp3, **single speaker**                                                                                                          |
+| Output       | Native script only — no ITN, no romanization, spoken numbers stay words                                                                                                 |
+| Code-mixing  | Native handling (Hinglish etc. as spoken)                                                                                                                               |
+| LID          | Built in, one extra decoder step (not a second encoder pass)                                                                                                            |
+| License      | Indic Open Model License v1.0 — free research/commercial self-host; hosted-API use needs written consent (nonprofit/acad exempt); ⚠️ fine-tunes must carry same license |
 
 **Gated repo:** requires accepting the license on HF before `snapshot_download` works → this is Day-1 setup friction, do it first. ⚠️ to-verify: exact token/env handling (`HF_TOKEN`).
 
@@ -80,7 +80,7 @@ asr.identify("a.wav", allowed_langs=RECOMMENDED_LANGS) # HARD filter — exclude
 ## Local run setup (verified on this machine)
 
 - Apple M5, no CUDA → device `mps`, dtype fp32 (wrapper forces fp32 on non-CUDA: `dtype = bf16 only if cuda`). M5 unified memory handles 4.6 GB fp32 fine.
-- `.venv` (python 3.12, uv), torch 2.14.0 (MPS ✓), transformers 5.17.0, jiwer 4.0.0, snapshot @ `4d29eeb7a099`.
+- `.venv` (python 3.12, uv), torch 2.14.0 (MPS ✓), transformers 5.17.0, jiwer 4.0.0, snapshot @ `4d29eeb7a099`; local checkpoint and loader view verified on 2026-09-13.
 - Secrets in `code/.env` (gitignored). Weights via `scripts/download_model.py`.
 
 ## Vendor-reported Voice of India OI-WER (⚠️ re-measure, don't trust)
@@ -92,6 +92,26 @@ Avg **8.7** · hi 3.5 · bn 4.3 · ur 5.0 · mr 5.7 · kn 7.4 · as 8.2 · pa 8.
 - Native script only → ITN is downstream (our Exp D territory)
 - Single speaker → diarization pairing needed (Exp E)
 - **"Bhojpuri, Maithili and Urdu are absorbed by Hindi far too often to be trusted. Pass `lang` explicitly whenever you have it."** — vendor's own words; P3 of [[THESIS]] predicts we confirm and quantify this.
+
+## Card re-check 2026-09-17 (current card modified 2026-09-15 — NEWER than our snapshot)
+
+Both cards were updated 2026-09-15 (HF API `lastModified`), i.e. **after** our 09-10 card fetch and code audit. Full re-fetch: `/tmp/core-card.md` (verbatim copy, 2026-09-17).
+
+| Item | Card (current, 09-15) | Ours (EXP-A–E) | Verdict |
+| --- | --- | --- | --- |
+| OI-WER avg 8.7 (VOI) | same numbers as 09-10 card; now with a **competitive table** (Saaras V3 10.7, Flex 11.3, Gemini 3 Pro 21.1, Indic Conformer 17.8) | Our whitespace-token WER on our challenge slice: **22.0%** mean, ml 34.1%, condition-spread mild (clean 21.2 / noise 23.2 / telephone 22.0) | Not comparable — different corpora/metric; our slice is harder + 80 samples. Directionally consistent (language variance >> condition variance). |
+| "Bhojpuri, Maithili and Urdu are absorbed by Hindi far too often to be trusted. Pass `lang` explicitly." (Limitations) | unchanged | [[F-001]] verified: bho auto-LID 0/10 correct; hi/mai/ur 10/10 | **Confirmed** (absorption one-directional in our slice) |
+| "handles noisy real-world conditions, from crowded markets to call-center floors" (intro) | unchanged | clean vs noise vs telephone: 21.2 / 23.2 / 22.0 WER on deterministic transforms | No contradiction on *mild* synthetic degradation; untested on real markets/call-center audio |
+| "Single speaker … pair it with a diarization module and transcribe each speaker turn separately" | unchanged | [[F-003]]: oracle-turn WER 99.8% on DiarBench slice | **Qualified**: remedy insufficient as stated — short-turn context also needed |
+| NEW since 09-10: **long-audio section** — 45 s hard refusal is "deliberate", `long_form.py` ships pause-splitting chunker (≤30 s pieces, loop-collapse), `inference.py` CLI | Our vendored snapshot `4d29eeb7a099` has **no `long_form.py`/`inference.py`** (verified via repo tree listing 09-17: both now in repo, `lid.py` 10.5 KB) | EXP-E pilot used raw turn cuts; sub-1s turns centre-padded to 1 s per code audit | **Repo updated after our vendoring** — re-vendor `long_form.py`, `inference.py`, and diff `indic_transcribe.py`/`lid.py` before any further code claims. Chunker targets long audio, not short conversational turns |
+| "Automatic language ID is uneven" + `identify` ranked-distribution rationale | unchanged, now with explicit ml/ta vs bho/hi/mai/ur examples | EXP-A 87.5% top-1; EXP-C top-3 coverage 79/80 | Confirmed; unevenness is language-concentrated |
+| Capabilities table: "Code-mixed audio ✅", "Transcription output: Native script" | unchanged | EXP-D: Core native entity recall 49.6%, number surface 59.1% — code-mixing handling untested in our suite | ⚠️ Untested claim in our experiments so far |
+
+**Claimable statements (evidence-backed, scoped):**
+1. Core's own Limitations admit Hindi-belt LID untrustworthiness; we measured bho 0/10 on our suite ([[F-001]]) — consistent, strengthens the vendor's own warning with independent numbers.
+2. The vendor's multi-speaker remedy is **necessary but not sufficient**: oracle turns alone fail on real conversational audio ([[F-003]]).
+3. Flex `mixed` ITN trades critical-value integrity for formatting: currency 100%→0%, entity 49.6%→20.5% surface recall ([[F-004]]) — quantifies the card's "occasionally wrong".
+4. Vendor OI-WER (8.7) and our challenge-slice WER (22.0%) differ by design: different corpora, different metric; **we cannot claim the vendor number is wrong, only that it does not transfer to our slice**.
 
 ## Related
 

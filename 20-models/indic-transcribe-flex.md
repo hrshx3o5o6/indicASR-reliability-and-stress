@@ -1,6 +1,6 @@
 ---
 type: model
-updated: 2026-09-10
+updated: 2026-09-17
 hf: "bodhan-ai/indic-transcribe-flex"
 params: "1.2B"
 languages: 27
@@ -48,4 +48,19 @@ API: `asr("audio.wav", lang="hi", mode="native" | "mixed" | "romanized")`; langu
 
 Exp A: LID-probe co-subject. Exp D: `mixed` mode as ITN baseline. Not the phase-1 baseline itself — Core is ([[D-002-core-as-baseline|D-002]]).
 
-Related: [[indic-transcribe-core]] · [[canary-1b-v2]] · [[F-001-hindi-belt-lid-absorption|F-001]] · [[lid-reliability]]
+## Card re-check 2026-09-17 (current card modified 2026-09-15 — NEWER than our snapshot)
+
+Full re-fetch: `/tmp/flex-card.md` (verbatim copy, 2026-09-17). Card body largely unchanged from our 09-10 extract; LID accuracy table (bho 0.05 / hi 0.26 / mai 0.36 / ur 0.49 vs ml/ta 0.98) is still present. New since 09-10: the same **long-audio section** as Core (`long_form.py`, `inference.py` CLI) — re-vendor from the Flex repo before use.
+
+| Card claim | Ours (EXP-A–E) | Verdict |
+| --- | --- | --- |
+| VOI OI-WER avg 11.3 + competitive table | Flex native WER 22.09% vs Core 22.01% on our slice — effectively tied | Not comparable (corpus/metric); consistent in *direction*: Flex ≤ Core in vendor table, tied in our slice |
+| "mixed-script mode will occasionally get it wrong" (Limitations) | [[F-004]]: mixed WER 33.54%, currency surface 100%→0%, entity 49.6%→20.5% | **Confirmed and quantified** — "occasionally" understates critical-value failures; card's own advice ("native-script mode recommended, apply your own ITN downstream") matches our no-go verdict |
+| Mixed mode = "native words in native script with English and numerals in Latin" | Mixed emitted digit-like tokens 15/80, Latin tokens 62/80; only mode with digit-form number recall (77.3%) | Confirmed as behavior; the ITN capability is real but unsafe on critical values |
+| LID table bho 0.05 | Core EXP-A: bho 0/10 correct ([[F-001]]); vendor table is Flex's | Consistent — both checkpoints fail bho LID |
+| "Noise robustness has limits … overlapped speech, far-field, very low SNR" | Untested on Flex (our degraded conditions ran on Core only) | ⚠️ Untested claim in our experiments |
+| Modes also work on long audio via `transcribe_long` | Not tested; `long_form.py` missing from our vendored snapshot | ⚠️ to-verify after re-vendoring |
+
+**Claimable statements:** see [[indic-transcribe-core]] re-check §claimable — the Flex mixed no-go ([[F-004]]) is the strongest Flex-specific evidence.
+
+Related: [[indic-transcribe-core]] · [[canary-1b-v2]] · [[F-001-hindi-belt-lid-absorption|F-001]] · [[F-004-flex-mixed-critical-values|F-004]] · [[lid-reliability]]

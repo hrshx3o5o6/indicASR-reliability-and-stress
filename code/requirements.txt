@@ -23,3 +23,10 @@ lightgbm
 pandas
 matplotlib
 seaborn
+
+# ASR inference service + thin client (Pattern 1, D-003) — service side only;
+# sandbox clients need just httpx.
+fastapi
+uvicorn
+pydantic
+httpx

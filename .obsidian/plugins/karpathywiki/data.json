@@ -33,7 +33,15 @@
   "autoWatchSources": true,
   "autoWatchMode": "notify",
   "autoWatchDebounceMs": 5000,
-  "watchedFolders": ["10-thesis", "20-models", "30-metrics", "40-pipeline", "50-dataset", "60-findings", "70-decisions"],
+  "watchedFolders": [
+    "10-thesis",
+    "20-models",
+    "30-metrics",
+    "40-pipeline",
+    "50-dataset",
+    "60-findings",
+    "70-decisions"
+  ],
   "periodicLint": "off",
   "startupCheck": true,
   "startupCheckNoticeLevel": "visible",
@@ -57,5 +65,8 @@
   "customQueryInstructions": "",
   "bedrockRegion": "us-east-1",
   "bedrockAuthMethod": "api-key",
-  "bedrockSsoStartUrl": ""
+  "bedrockSsoStartUrl": "",
+  "_migrated_v1_23_0_startup_notice": true,
+  "_migrated_v1_25_3_secret_storage": true,
+  "_migrated_v1_27_0_markdown_conversion_backend": true
 }

@@ -8,31 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "97aca0eb9bd293f7",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "40-pipeline/roadmap.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "roadmap"
-            }
-          },
-          {
             "id": "1c21441ed04ae6ec",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "20-models/indic-transcribe-flex.md",
+                "file": "20-models/indic-transcribe-core.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "indic-transcribe-flex"
+              "title": "indic-transcribe-core"
             }
           },
           {
@@ -44,9 +30,22 @@
               "icon": "lucide-git-fork",
               "title": "Graph view"
             }
+          },
+          {
+            "id": "7b84896516de7ba6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "40-pipeline/EXPERIMENT-OBSERVATIONS.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "EXPERIMENT-OBSERVATIONS"
+            }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -108,7 +107,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "88f6a8e7d6cad70a",
@@ -212,43 +212,44 @@
       "karpathywiki:Query wiki": false
     }
   },
-  "active": "5e326999d5201893",
+  "active": "1c21441ed04ae6ec",
   "lastOpenFiles": [
-    "HOME.md",
-    "60-findings/F-002-vendor-lid-internals.md",
-    "code/download.log",
-    "code/scripts/download_model.py",
-    "code/vendored/core/requirements.txt",
-    "code/vendored/core/generation_config.json",
-    "code/vendored/core/config.json",
-    "code/vendored/core/lid.py",
-    "code/vendored/core/indic_transcribe.py",
-    "code/vendored/core",
-    "code/vendored",
-    "code/scripts/verify_access.py",
-    "90-journal/2026-09-10.md",
-    "70-decisions/D-001-layer-not-model.md",
-    "70-decisions/D-002-core-as-baseline.md",
-    "60-findings/F-001-hindi-belt-lid-absorption.md",
-    "50-dataset/challenge-suite-spec.md",
-    "50-dataset/annotation-schema.md",
-    "50-dataset/datasets/mucs.md",
-    "50-dataset/datasets/kathbath.md",
-    "50-dataset/datasets/indicvoices.md",
-    "50-dataset/datasets/indic-tts-corpora.md",
-    "50-dataset/datasets/indic-diarbench.md",
-    "50-dataset/datasets/fleurs.md",
-    "40-pipeline/experiments/EXP-A-baseline-census.md",
+    "70-decisions/D-005-reqly-mcp-partial-sandbox.md",
+    "scripts/__pycache__/ralph_sandbox.cpython-314.pyc",
+    "scripts/__pycache__",
+    "docs/validation/runs.jsonl",
+    "docs/validation",
+    "docs/PRIOR-CONTEXT.md",
+    "scripts/ralph_sandbox.py",
+    "scripts/ralph_pass.sh",
+    "scripts/ralph.sh",
+    "scripts",
+    "RALPH.md",
+    "code/__pycache__/asr_client.cpython-314.pyc",
+    "code/__pycache__/asr_service.cpython-314.pyc",
+    "90-journal/2026-09-19.md",
+    "40-pipeline/INFRA-NOTES.md",
+    "70-decisions/D-004-sandboxed-thin-clients.md",
+    "70-decisions/D-003-model-as-service.md",
+    "40-pipeline/DEPLOYMENT.md",
+    "docs/REPRODUCE.md",
+    "REPORT.md",
+    "40-pipeline/experiments/EXP-F-real-noise.md",
+    "SUMMARY-PLAIN-ENGLISH.md",
+    "60-findings/F-004-flex-mixed-critical-values.md",
+    "60-findings/F-003-oracle-turns-fail-diarbench.md",
+    "40-pipeline/EXPERIMENT-OBSERVATIONS.md",
+    "Untitled.canvas",
     "40-pipeline/roadmap.md",
-    "20-models/indic-transcribe-core.md",
-    "20-models/indic-transcribe-flex.md",
+    "90-journal/2026-09-17.md",
+    "90-journal/2026-09-16.md",
+    "code/data/models/indic-transcribe-flex/README.md",
+    "40-pipeline/experiments/EXP-E-diarization.md",
+    "40-pipeline/experiments/EXP-A-baseline-census.md",
+    "90-journal/2026-09-15.md",
+    "40-pipeline/experiments/EXP-D-normalization-entities.md",
+    "40-pipeline/experiments/EXP-C-adaptive-lid.md",
     "40-pipeline/experiments/EXP-B-reliability-abstention.md",
-    "20-models/canary-1b-v2.md",
-    "10-thesis/THESIS.md",
-    "00-meta/templates/tpl-decision.md",
-    "00-meta/templates/tpl-daily.md",
-    "code/README.md",
-    "00-meta/templates/tpl-finding.md",
-    "00-meta/templates/tpl-experiment.md"
+    "70-decisions/D-002-core-as-baseline.md"
   ]
 }

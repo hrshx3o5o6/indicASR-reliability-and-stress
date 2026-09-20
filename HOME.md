@@ -7,7 +7,7 @@ updated: 2026-09-10
 
 > **Thesis:** SOTA Indic ASR is no longer the primary bottleneck. The bottleneck is *knowing when a transcription can be trusted, why it may be unreliable, and converting it into an application-ready representation.*
 
-New here → [[README]] (operating contract) → [[THESIS]].
+New here → [[README]] (operating contract) → [[THESIS]]. Non-technical? → [[SUMMARY-PLAIN-ENGLISH]].
 **Any LLM agent: read [[README]] before touching anything.**
 
 ## System under study
@@ -65,7 +65,8 @@ GROUP BY file.link
 ## Map
 
 - **Why** — [[THESIS]] · decisions: [[D-001-layer-not-model|D-001]], [[D-002-core-as-baseline|D-002]]
-- **What** — [[PIPELINE]] · [[roadmap]] · experiments `40-pipeline/experiments/`
+- **What** — [[PIPELINE]] · [[roadmap]] · [[EXPERIMENT-OBSERVATIONS]] · experiments `40-pipeline/experiments/`
+- **Ship** — [[DEPLOYMENT]] (real-world use case + future scope) · [[INFRA-NOTES]] (blockers + Ralph loop) · `REPORT.md` · `docs/REPRODUCE.md` · `RALPH.md` (loop contract)
 - **Measure** — [[METRICS]] registry · [[oi-wer]] · [[lid-reliability]] · [[selective-prediction]] · [[error-taxonomy]]
 - **Data** — [[challenge-suite-spec]] · [[annotation-schema]] · [[DATASETS]]
 - **Models** — [[indic-transcribe-core]] · [[indic-transcribe-flex]] · [[canary-1b-v2]]

@@ -1,0 +1,1 @@
+{"ts":"2026-09-19T16:05:28Z","task":"prior-context","claim":"","receipt":"test -f docs/PRIOR-CONTEXT.md && test $(wc -l < docs/PRIOR-CONTEXT.md) -lt 80","exit":0,"status":"done","git_sha":"afdf289"}
