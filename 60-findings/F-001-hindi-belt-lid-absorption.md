@@ -3,9 +3,9 @@ type: finding
 id: F-001
 title: "Hindi-belt languages are absorbed by Hindi in LID (vendor-reported)"
 status: verified
-confidence: "high — vendor claim + EXP-A measurement agree; small-n caveat"
+confidence: "high — vendor claim + EXP-A measurement agree; small-n caveat; scope narrowed to Core specifically, see 2026-09-20 update"
 metric: lid-reliability
-updated: 2026-09-17
+updated: 2026-09-20
 ---
 
 # F-001 — Hindi-belt LID absorption
@@ -27,3 +27,16 @@ They demand different fixes ([[EXP-C]] addresses #1 via top-K routing; #2 may ne
 **Update 2026-09-10 (code audit):** vendor's own 337k-clip measurements ([[F-002-vendor-lid-internals|F-002]]) refine the picture — the confusion is a **multi-way sink system** (`hne` is the biggest absorber, not Hindi), and hi/ur is declared genuinely inseparable. F-001 remains the card-level claim; F-002 is the mechanism-level account.
 
 **If confirmed with similar rates:** the adaptive-LID project ([[EXP-C]]) has its headline motivation pre-validated. **If refuted:** record honestly — maybe Core fixed what Flex's numbers show; that would itself be a finding about the two training runs.
+
+**Update 2026-09-20 (empirical, resolves the line-23/29 open question — the
+opposite direction from what was anticipated).** Ran the same EXP-A
+auto-condition test on **Flex**, same 80-sample suite: Bhojpuri auto-LID
+**4/10 correct** (Wilson 95% CI [16.8%, 68.7%]), vs Core's 0/10 — Flex is
+*better*, not worse, on this axis, and when Flex is wrong it's absorbed by
+**Maithili** (5/6 wrong calls), not Hindi (1/6). So: **the "Hindi-belt
+absorption" framing in this finding is Core-specific.** It does not
+generalize to "the model family absorbs Bhojpuri into Hindi" — Flex shows a
+real, different, milder confusion pattern. Overall transcription WER is tied
+between the two models (paired bootstrap, 95% CI on the diff spans zero),
+so this is specifically a LID-behavior difference, not a general capability
+difference. Full writeup: [[F-005-flex-only-auto-lid-restriction|F-005]].

@@ -2,11 +2,11 @@
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
 status: draft-reviewed
-version: 0.4
+version: 0.5
 updated: 2026-09-20
 model_snapshots:
-  core: "bodhan-ai/indic-transcribe-core@4d29eeb7a099"
-  flex: "bodhan-ai/indic-transcribe-flex (revision TBD)"
+  core: "bodhan-ai/indic-transcribe-core@e083ab7d"
+  flex: "bodhan-ai/indic-transcribe-flex@c0db6b2b"
 ---
 
 # Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model
@@ -33,7 +33,11 @@ be trusted and *why* it fails. We characterize the reliability envelope of
 `indic-transcribe-core` (1.2B, 25 languages) and its sibling `indic-transcribe-flex`
 on a deliberately structured 80-sample challenge suite spanning 8 languages and three
 audio conditions. We reproduce the vendor's documented Hindi-belt language-identification
-absorption (Bhojpuri auto-LID 0/10), show that top-3 candidate generation contains
+absorption on Core (Bhojpuri auto-LID 0/10), then show this is model-specific, not a
+family-wide property: a second baseline on the sibling Flex model recovers 4/10 on the
+same 10 clips — absorbed mostly by Maithili, not Hindi, when wrong — while the two models
+are statistically tied on overall transcription WER (paired 95% CI spans zero). We show
+that top-3 candidate generation contains
 recoverable headroom (oracle WER 22.38% vs 24.87% baseline) while likelihood-based
 reranking fails, demonstrate that Flex's built-in mixed-mode ITN collapses currency
 surface recall from 100% to 0% (n=3 currency-bearing rows), and report a
@@ -93,8 +97,9 @@ explicitly) and nothing else that touches our runners; `transcribe()`'s
 `return_lid` contract (root cause of the F-003 bug) is unchanged in the
 current code. New finding from the diff: **F-005** — Flex's `transcribe()`
 restricts default auto-LID to `RECOMMENDED_LANGS`; Core's does not. Neither
-card documents this; none of our existing measurements are affected (all ran
-on Core), but it's new information about the two models' behavior.
+card documents this. Empirically tested (§5.8): Flex recovers 4/10 on
+Bhojpuri where Core gets 0/10 — real, model-specific — but *not* explained by
+this restriction (`bho` isn't in the excluded set); the actual cause is open.
 
 ## 3. Challenge suite
 
@@ -222,9 +227,36 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
   vendor's own (undisclosed) OI-WER definition or their Voice-of-India corpus.
 - Artifact: `code/results/summaries/exp-a-v1-oiwer-summary.json`.
 
+### 5.8 Second baseline — Flex on the EXP-A suite (F-005 empirical test)
+- Previously blocked (`asr_url` unset); unblocked 2026-09-20 by standing up
+  local inference. Ran Flex through the exact same EXP-A auto-condition call
+  Core used, same 80 samples.
+- **Overall WER tied**: Core 22.01% / Flex 21.85%, paired bootstrap 95% CI on
+  the diff **[-1.5, +1.2] pts**, includes zero, p=0.83 — not distinguishable
+  on this suite.
+- **Bhojpuri auto-LID: Core 0/10, Flex 4/10** (Wilson 95% CI [16.8%, 68.7%]).
+  When Flex is wrong, it's absorbed by **Maithili** (5/6), not Hindi (1/6) —
+  a different confusion pattern than Core's, not a milder version of the same
+  one. This narrows C1/F-001's "Hindi-belt absorption" framing to Core
+  specifically.
+- This traces to a genuine code asymmetry found by re-vendoring (§2, F-005):
+  Flex's `transcribe()` restricts default auto-LID candidates to
+  `RECOMMENDED_LANGS` (excludes bgc/bhb only — not bho), Core's does not. That
+  restriction does **not** explain the Bhojpuri gap (bho isn't excluded on
+  either model) — the cause is open; candidate explanations (Flex's 27-lang
+  training set shifting the softmax; a genuinely better-trained checkpoint on
+  this axis) are untested.
+- Artifacts: `code/results/summaries/exp-a-v1-flex-{baseline,summary}.json`,
+  CIs in `code/results/stats/bootstrap.json` (`exp_a_core_vs_flex`,
+  `exp_a_flex_bho_lid`).
+
 ## 6. Results synthesis
 
 - Failure surface is **language/LID**, not audio quality, in this slice.
+- The LID failure surface is **model-specific, not architecture-wide**: Core
+  and Flex are tied on transcription WER but diverge sharply on Bhojpuri
+  auto-LID (0/10 vs 4/10) with different confusion targets (Hindi vs
+  Maithili) — see §5.8/C7.
 - Obvious interpretable reliability signals are insufficient; a better reranker is
   required before abstention becomes useful.
 - Built-in ITN is formatting without a semantic guard.
@@ -237,13 +269,13 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
 
 | # | Claim | Evidence | Confidence | Limits |
 |---|---|---|---|---|
-| C1 | Bhojpuri absorbed by Hindi in auto-LID | EXP-A bho 0/10, Wilson 95% CI [0%, 27.8%]; EXP-C top-3 contains truth 10/10 | high (n=10) | 1 dialect/source |
+| C1 | Bhojpuri absorbed by Hindi in auto-LID — **Core-specific**, does not generalize to Flex | EXP-A bho 0/10, Wilson 95% CI [0%, 27.8%] (Core); EXP-C top-3 contains truth 10/10; Flex gets 4/10 correct, absorbed mostly by Maithili not Hindi when wrong (§5.8, F-005) | high (n=10) for Core; the "Hindi-belt" framing itself is now known to be model-specific | 1 dialect/source; two models tested, not a model-family universal |
 | C2 | Built-in mixed ITN breaks critical values | EXP-D currency 100→0 (n=3 rows), entity 49.6→20.5 (n=39 rows); WER regression bootstrap 95% CI [+7.8, +15.4] pts (n=80) | medium-high for entity/WER; **low for currency (n=3)** | surface metric, 50/80 rows carried any annotated slot — see §5.4 reconciliation |
 | C3 | Vendor's diarize-then-transcribe remedy helps modestly but is not sufficient alone; a naive automatic diarizer actively hurts | EXP-E rerun 2026-09-20: no-diar 66.6% → oracle-turn 57.7% (real WER, after fixing a `[0]`-indexing bug that had inflated the original numbers to ~99.8%) → automatic VAD/KMeans 82.6% (worse than no-diar) | high for this slice (measured end-to-end, real transcripts spot-checked) | n=4, 2 langs, DER from a toy energy-VAD/KMeans baseline |
 | C4 | Top-K generation has headroom; likelihood reranker fails | EXP-C oracle 22.38 vs 24.87; bootstrap 95% CI on the gap [1.04, 4.20] pts, p≈0.0002 | medium-high | n=80, one reranker |
 | C5 | Vendor OI-WER does not transfer to this slice | EXP-A whitespace WER 22.0 / project OI-WER 19.9 vs vendor's reported OI-WER 8.7 (§5.7) | high (categorical; formatting tolerance closes only ~2 of ~13 points) | different corpus; still not the vendor's own OI-WER definition |
 | C6 | Interpretable features do not predict errors here | EXP-B AUC 0.515, bootstrap 95% CI [0.387, 0.646] (spans 0.5) | medium-high — CI confirms "no better than chance," not just a point estimate | n=80, provisional label |
-| C7 | Core and Flex are not symmetric on default auto-LID: Flex restricts candidates to `RECOMMENDED_LANGS`, Core does not | Direct code diff, `indic_transcribe.py`, both vendored 2026-09-20 (F-005) | high for the code fact; **untested** for empirical effect | code-audit only — no inference run; vendor's own 337k-clip number (pa 0.620→0.775) not independently verified |
+| C7 | Core and Flex are not symmetric on Bhojpuri auto-LID: Flex recovers 4/10 where Core gets 0/10, via a different confusion pattern (absorbed by Maithili, not Hindi); overall WER is tied between the two models | §5.8: paired bootstrap on 80 matched samples, WER diff CI [-1.5,+1.2]pts (p=0.83, tied); bho Wilson CI [16.8%,68.7%] vs Core's [0%,27.8%]. Code-level asymmetry (Flex-only `RECOMMENDED_LANGS` default restriction, F-005) found first but does **not** explain the Bhojpuri effect (bho not in the excluded set) | high — real inference run, both models, matched samples | cause of the Bhojpuri gap is unexplained; vendor's own 337k-clip number for the *documented* restriction (pa 0.620→0.775, unrelated to bho) not independently verified |
 
 Bootstrap methodology and full numbers: `code/scripts/bootstrap_cis.py` → `code/results/stats/bootstrap.json` (10,000 resamples, seed 20260920, paired bootstrap for within-sample comparisons, Wilson score interval for the n=10 binomial).
 
@@ -275,12 +307,17 @@ production-safety statement; DER quality of neural diarization.
 - **Committed to this repo (2026-09-20):** `code/metrics/oi_wer.py` +
   `code/tests/test_oi_wer.py`, `code/scripts/bootstrap_cis.py` +
   `code/results/stats/bootstrap.json`, `code/scripts/rescore_oi_wer.py` +
-  `code/results/summaries/exp-a-v1-oiwer-summary.json`. Re-run bootstrap CIs
-  with `code/.venv/bin/python code/scripts/bootstrap_cis.py --exp-c-hypotheses
-  <SSD>/exp-c/exp-c-hypotheses.jsonl --exp-d-flex-results
+  `code/results/summaries/exp-a-v1-oiwer-summary.json`,
+  `code/results/summaries/exp-a-v1-flex-{baseline,summary}.json`,
+  `code/results/summaries/exp-e-v2-pilot-{results,summary}.json`. Re-run
+  bootstrap CIs with `code/.venv/bin/python code/scripts/bootstrap_cis.py
+  --exp-c-hypotheses <SSD>/exp-c/exp-c-hypotheses.jsonl --exp-d-flex-results
   <SSD>/exp-d/exp-d-flex-results.jsonl --exp-b-decisions
-  <SSD>/exp-b-v1/exp-b-decisions.jsonl --output code/results/stats/bootstrap.json`.
-- **Still TODO:** the underlying EXP-A/B/C/D/E per-sample JSONL and summary
+  <SSD>/exp-b-v1/exp-b-decisions.jsonl --exp-a-core-baseline
+  <SSD>/exp-a-v1-baseline.jsonl --exp-a-flex-baseline
+  code/results/summaries/exp-a-v1-flex-baseline.jsonl --output
+  code/results/stats/bootstrap.json`.
+- **Still TODO:** the underlying EXP-A/B/C/D per-sample JSONL and summary
   JSON still live only on the research SSD, not in the replication bundle;
   copy them + SHA-256 checksums into `code/results/summaries/`; lock
   dependency versions (`code/requirements.lock` does not exist yet); single
@@ -306,5 +343,6 @@ production-safety statement; DER quality of neural diarization.
 | §5.5 (EXP-E) | `F-003`, SSD `exp-e-v2/exp-e-pilot-summary.json` | **re-measured 2026-09-20** — bug found, fixed, real numbers in |
 | §5.6 (EXP-F) | `EXP-F-real-noise.md` | not run — needs live ASR service |
 | §5.7 (OI-WER) | `code/results/summaries/exp-a-v1-oiwer-summary.json` | filled 2026-09-20 |
+| §5.8 (second baseline) | `code/results/summaries/exp-a-v1-flex-*.json`, bootstrap.json | filled 2026-09-20, unblocked P-task from Ralph loop |
 | §7 C1–C7 | findings `F-001..005` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
 | Lockfile / full repro bundle | — | still TODO (§9) |

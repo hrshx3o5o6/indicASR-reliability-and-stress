@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 from pathlib import Path
 
 import numpy as np
@@ -16,6 +17,33 @@ from sklearn.metrics import roc_auc_score
 
 RNG_SEED = 20260920
 N_BOOT = 10000
+
+
+def _wer_tokens(text: str) -> list[str]:
+    return re.findall(r"\S+", text.strip())
+
+
+def _edit_distance(reference: list[str], hypothesis: list[str]) -> int:
+    previous = list(range(len(hypothesis) + 1))
+    for ref_index, ref_token in enumerate(reference, 1):
+        current = [ref_index]
+        for hyp_index, hyp_token in enumerate(hypothesis, 1):
+            current.append(
+                min(
+                    current[-1] + 1,
+                    previous[hyp_index] + 1,
+                    previous[hyp_index - 1] + (ref_token != hyp_token),
+                )
+            )
+        previous = current
+    return previous[-1]
+
+
+def wer(reference: str, hypothesis: str) -> float:
+    """Whitespace-token WER, matching code/analyze_exp_a.py's definition exactly."""
+    ref_tokens = _wer_tokens(reference)
+    hyp_tokens = _wer_tokens(hypothesis)
+    return _edit_distance(ref_tokens, hyp_tokens) / max(len(ref_tokens), 1)
 
 
 def bootstrap_mean_ci(values: np.ndarray, n_boot: int = N_BOOT, seed: int = RNG_SEED) -> dict:
@@ -84,6 +112,8 @@ def main() -> int:
     parser.add_argument("--exp-c-hypotheses", type=Path, required=True)
     parser.add_argument("--exp-d-flex-results", type=Path, required=True)
     parser.add_argument("--exp-b-decisions", type=Path, required=True)
+    parser.add_argument("--exp-a-core-baseline", type=Path, default=None)
+    parser.add_argument("--exp-a-flex-baseline", type=Path, default=None)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -114,6 +144,28 @@ def main() -> int:
     labels = np.array([1 if r["label_acceptable"] else 0 for r in exp_b_rows])
     scores = np.array([r["reliability"] for r in exp_b_rows])
     result["exp_b"] = {"oof_roc_auc": bootstrap_auc_ci(labels, scores)}
+
+    # Second-baseline comparison: Core vs Flex explicit-language-condition WER
+    # (matches code/analyze_exp_a.py's own WER definition: explicit.transcript
+    # vs reference), same 80 samples. Flex run 2026-09-20, F-005 empirical
+    # test / previously-blocked "second-baseline" task.
+    if args.exp_a_core_baseline and args.exp_a_flex_baseline:
+        core_rows = {r["id"]: r for r in load_jsonl(args.exp_a_core_baseline)}
+        flex_rows = {r["id"]: r for r in load_jsonl(args.exp_a_flex_baseline)}
+        shared_ids = sorted(set(core_rows) & set(flex_rows))
+        core_wer = np.array([wer(core_rows[i]["reference"], core_rows[i]["explicit"]["transcript"]) for i in shared_ids])
+        flex_wer = np.array([wer(flex_rows[i]["reference"], flex_rows[i]["explicit"]["transcript"]) for i in shared_ids])
+        result["exp_a_core_vs_flex"] = {
+            "n_matched": len(shared_ids),
+            "core_explicit_wer": bootstrap_mean_ci(core_wer),
+            "flex_explicit_wer": bootstrap_mean_ci(flex_wer),
+            "paired_diff_flex_minus_core": bootstrap_paired_diff_ci(flex_wer, core_wer),
+        }
+        bho_ids = [i for i in shared_ids if flex_rows[i]["language"] == "bho"]
+        flex_bho_correct = sum(
+            1 for i in bho_ids if flex_rows[i]["auto"]["lid"].get("lang") == "bho"
+        )
+        result["exp_a_flex_bho_lid"] = {"auto_lid_correct": wilson_ci(flex_bho_correct, len(bho_ids))}
 
     # C1: Bhojpuri auto-LID absorption, n=10, 0 successes -> Wilson CI (bootstrap
     # is degenerate at n=10 with a 0/10 point estimate; Wilson is the standard

@@ -1,0 +1,11 @@
+{
+  "sample_count": 4,
+  "scope": "4 two-speaker Hindi/Tamil recordings, near-field and far-field",
+  "mean_wer": {
+    "no_diarization_wer": 0.6661520748900891,
+    "oracle_turn_wer": 0.5765110598237725,
+    "automatic_vad_cluster_wer": 0.8264667121379153
+  },
+  "mean_automatic_der": 0.625068597597007,
+  "note": "Pilot only: automatic system is energy VAD plus spectral-feature KMeans, not a neural diarizer."
+}
