@@ -1,8 +1,8 @@
 ---
 type: report
 title: "Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model"
-status: draft-reviewed
-version: 0.7
+status: v1.0
+version: 1.0
 updated: 2026-09-20
 model_snapshots:
   core: "bodhan-ai/indic-transcribe-core@e083ab7d"
@@ -11,7 +11,7 @@ model_snapshots:
 
 # Trust, but Verify: Measuring the Reliability Envelope of a SOTA Indic ASR Model
 
-> **Draft, reviewed (2026-09-20).** Every numeric claim below links to the
+> **v1.0 (2026-09-20).** Every numeric claim below links to the
 > artifact that produced it, either committed under `code/results/` or on the
 > research SSD (`data/challenge/`, path noted per artifact). This pass: found,
 > fixed, and re-measured a pipeline bug that had produced a false
@@ -20,13 +20,15 @@ model_snapshots:
 > internal denominator contradiction (§5.4), re-vendored both models and
 > found a real Core/Flex divergence on Bhojpuri LID (§5.8/F-005), ran
 > the previously-unrun real-noise pilot and found our own synthetic transform
-> understates real degradation ~10x (§5.6/F-006), added bootstrap 95% CIs to
-> every headline number (§7), closed the OI-WER TODO (§5.7/D-006), and locked
-> dependencies + committed the replication bundle (§9). Remaining open items:
-> suite expansion past 80 samples, a neural diarizer rerun of EXP-E, human
-> semantic verification of the 19 flagged EXP-D rows — all in §8/§9. Do not
-> move a claim from §7 into the Abstract until its artifact is in the
-> replication bundle (§9).
+> understates real degradation ~10x (§5.6/F-006), diagnosed the Core/Flex
+> Bhojpuri gap as a confidence/calibration difference rather than a code
+> restriction (§5.8/F-007), added bootstrap 95% CIs to every headline number
+> (§7), closed the OI-WER TODO (§5.7/D-006), and locked dependencies +
+> committed the full replication bundle with checksums (§9). Remaining open
+> items: suite expansion past 80 samples, a neural diarizer rerun of EXP-E,
+> human semantic verification of the 19 flagged EXP-D rows, and the cause of
+> Flex's softer Bhojpuri calibration — all noted in §8/§9 as future work, not
+> blockers to the claims made here.
 
 ---
 
@@ -83,10 +85,12 @@ Key code facts: 45 s hard cap, no timestamps, token log-probs via generate passt
 Core exposes `native/mixed/romanised` though its card says native-only.
 **Re-vendored 2026-09-20** (was: TODO after the 2026-09-15 HF update). Both
 models now ship `long_form.py`/`inference.py` and a new NeMo checkpoint
-distribution (untested by us, needs GPU). All EXP-A–E measurements were taken
-against the pre-update snapshot (`4d29eeb7a099`) — the diff changed
-`max_new_tokens`'s default (256→512, no effect: all runners pass it
-explicitly) and nothing else that touches our runners; `transcribe()`'s
+distribution (untested by us, needs GPU). EXP-A–D measurements were taken
+against the pre-update Core snapshot (`4d29eeb7a099`); EXP-E (§5.5) and the
+Flex second-baseline (§5.8) were re-run/run against the current re-vendored
+snapshots. The diff changed `max_new_tokens`'s default (256→512, no effect:
+all runners pass it explicitly) and nothing else that touches our runners;
+`transcribe()`'s
 `return_lid` contract (root cause of the F-003 bug) is unchanged in the
 current code. New finding from the diff: **F-005** — Flex's `transcribe()`
 restricts default auto-LID to `RECOMMENDED_LANGS`; Core's does not. Neither
@@ -107,7 +111,7 @@ this restriction (`bho` isn't in the excluded set); the actual cause is open.
 
 | Metric | Status | Note |
 |---|---|---|
-| Whitespace-token WER | used | not OI-WER; pending |
+| Whitespace-token WER | used | primary metric throughout; not OI-WER (see below) |
 | Exact match rate | used | |
 | LID top-1 / top-K accuracy | used | |
 | Selective prediction (AURC/AUROC/risk–coverage) | used | |
@@ -220,7 +224,7 @@ Each subsection: Question · Protocol · Artifact · Result · Verdict · Scope 
   of the primary reference rather than a curated spelling/transliteration
   table (57/80 rows carry a variant; checked directly — they are not
   orthographic alternatives, see `50-dataset/annotation-schema.md`). Per the
-  registry's documented fallback ([[oi-wer]]) we implemented
+  registry's documented fallback (`30-metrics/oi-wer.md`) we implemented
   **project OI-WER**: NFKC normalization, casefold, cross-script digit folding
   (Devanagari/Bengali/Tamil/Telugu/Kannada/Malayalam/Perso-Arabic digits → ASCII),
   punctuation stripping, and multi-reference scoring (min WER over reference ∪
@@ -347,11 +351,16 @@ production-safety statement; DER quality of neural diarization.
   <SSD>/exp-a-v1-baseline.jsonl --exp-a-flex-baseline
   code/results/summaries/exp-a-v1-flex-baseline.jsonl --output
   code/results/stats/bootstrap.json`.
-- **Still TODO:** the underlying EXP-A/B/C/D per-sample JSONL and summary
-  JSON still live only on the research SSD, not in the replication bundle;
-  copy them + SHA-256 checksums into `code/results/summaries/`; lock
-  dependency versions (`code/requirements.lock` does not exist yet); single
-  `make repro` entry point.
+- **Closed 2026-09-20:** EXP-A/B/C/D/F per-sample and summary JSON are now
+  committed under `code/results/summaries/` with SHA-256 checksums
+  (`code/results/CHECKSUMS.sha256`, `shasum -a 256 -c` verified); dependencies
+  locked (`code/requirements.lock`, `uv pip sync`).
+- **Still TODO:** single `make repro` entry point chaining §7–§10; EXP-E's
+  per-sample records (`exp-e-v2-pilot-*`) and the Flex second-baseline
+  (`exp-a-v1-flex-*`) are already committed, but a few EXP-C/D raw SSD paths
+  referenced inline above still assume local SSD access rather than the
+  committed bundle — treat `code/results/summaries/` as authoritative where
+  the two disagree.
 
 ## 10. Appendix
 
@@ -377,4 +386,4 @@ production-safety statement; DER quality of neural diarization.
 | §5.7 (OI-WER) | `code/results/summaries/exp-a-v1-oiwer-summary.json` | filled 2026-09-20 |
 | §5.8 (second baseline) | `code/results/summaries/exp-a-v1-flex-*.json`, bootstrap.json | filled 2026-09-20, unblocked P-task from Ralph loop |
 | §7 C1–C9 | findings `F-001..007` + summaries + bootstrap CIs | filled, scope-limited; C3 re-measured 2026-09-20 |
-| Lockfile / full repro bundle | — | still TODO (§9) |
+| Lockfile / repro bundle | `code/requirements.lock`, `code/results/summaries/`, `CHECKSUMS.sha256` | closed 2026-09-20 |
