@@ -1,0 +1,9 @@
+== flex: LID top-1 on UNPADDED clips ==
+benchmark  bho: 247/444 =  55.6%  Wilson95 [51.0,60.2]  speakers=0  wrong->{'mai': 94, 'hi': 80, 'mr': 3, 'ne': 3}
+train_real bho: 124/200 =  62.0%  Wilson95 [55.1,68.4]  speakers=100  wrong->{'mai': 40, 'hi': 34, 'hne': 2}
+train_real hi: 195/200 =  97.5%  Wilson95 [94.3,98.9]  speakers=100  wrong->{'ur': 2, 'bho': 2, 'hne': 1}
+benchmark bho truth in top-3: 406/444
+train_real bho truth in top-3: 198/200
+scenario {('benchmark', 'Read'): '247/444', ('train_real', 'Extempore'): '68/100', ('train_real', 'Read'): '56/100'}
+district {('benchmark', 'Bhadohi'): '67/129', ('benchmark', 'Jaunpur'): '79/138', ('benchmark', 'Mirzapur'): '101/177', ('train_real', None): '124/200'}
+bho wrong: mean top1 prob 0.726, share >=0.9: 0.29
