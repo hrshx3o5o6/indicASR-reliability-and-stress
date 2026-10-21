@@ -7,10 +7,11 @@ from guard.devanagari_numbers import number_runs, has_currency_word
 from indic_transcribe import IndicTranscribe
 D=Path("/tmp/claude-0/data/bho_lid")
 rows=[json.loads(l) for l in (D/"manifest.jsonl").open() if l.strip()]
-sel=[r for r in rows if r["split"]=="benchmark" and (number_runs(r["text"]) or has_currency_word(r["text"]))]
+SPLIT=sys.argv[1] if len(sys.argv)>1 else "benchmark"
+sel=[r for r in rows if r["split"]==SPLIT and r["lang"]=="bho" and (number_runs(r["text"]) or has_currency_word(r["text"]))]
 print("selected",len(sel),flush=True)
 asr=IndicTranscribe.from_pretrained("/tmp/claude-0/models/flex",device="cpu")
-out=D/"guard_flex.jsonl"; done=set()
+out=D/("guard_flex.jsonl" if SPLIT=="benchmark" else f"guard_flex_{SPLIT}.jsonl"); done=set()
 if out.exists(): done={json.loads(l)["id"] for l in out.open()}
 t0=time.time()
 with out.open("a") as f:

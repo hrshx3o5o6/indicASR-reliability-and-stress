@@ -22,7 +22,7 @@ import unicodedata
 # value -> spelling variants (Hindi plus common Bhojpuri/Maithili spellings).
 # Keys are normalized below, so nukta / chandrabindu variants need not be listed.
 _WORDS: dict[int, str] = {
-    0: "शून्य जीरो सुन्न",
+    0: "शून्य जीरो सुन्न शुन्न जिरो",
     1: "एक",
     2: "दो दू दुई",
     3: "तीन",
@@ -47,9 +47,9 @@ _WORDS: dict[int, str] = {
     22: "बाईस बाइस",
     23: "तेईस तेइस",
     24: "चौबीस",
-    25: "पच्चीस",
+    25: "पच्चीस पचीस",
     26: "छब्बीस",
-    27: "सत्ताईस सत्ताइस",
+    27: "सत्ताईस सत्ताइस सताईस",
     28: "अट्ठाईस अठाईस अठाइस अट्ठाइस",
     29: "उनतीस उन्तीस",
     30: "तीस",
@@ -76,7 +76,7 @@ _WORDS: dict[int, str] = {
     51: "इक्यावन",
     52: "बावन",
     53: "तिरपन तिरेपन",
-    54: "चौवन",
+    54: "चौवन चौउवन",
     55: "पचपन",
     56: "छप्पन",
     57: "सत्तावन",
@@ -138,11 +138,11 @@ _PUNCT = re.compile(r"[\s।,.?!:;\"'()\[\]{}\-–—]+")
 
 
 def normalize_token(token: str) -> str:
-    """NFC, drop nukta, fold chandrabindu to anusvara."""
+    """NFC, drop nukta and avagraha, fold chandrabindu to anusvara."""
     token = unicodedata.normalize("NFC", token)
-    token = token.replace("़", "").replace("ँ", "ं")
+    token = token.replace("\u093c", "").replace("\u0901", "\u0902").replace("\u093d", "")
     # NFC recomposes nukta letters (ड़ -> U+095C) only for some; decompose then strip.
-    token = unicodedata.normalize("NFD", token).replace("़", "")
+    token = unicodedata.normalize("NFD", token).replace("\u093c", "")
     return unicodedata.normalize("NFC", token)
 
 
